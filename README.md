@@ -11,3 +11,4 @@ A generator for git messages
 
 ## TODO
 - Prompt for framework to determine importance of files? (For whichever goes in the short summary)
+- to use it call `tablespoon`, `tbl`, `tbs`, or `tbsp`
