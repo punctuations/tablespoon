@@ -16,3 +16,4 @@ A generator for git messages
 ## OPTIONS
 - [Javascript](https://github.com/njzydark/project-template-cli)
 - [Go](https://github.com/pterm/cli-template)
+- [Rust](https://github.com/rust-cli/cli-template)
