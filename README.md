@@ -55,17 +55,17 @@ Run the following command in a terminal and you're ready to go!
 
 **Windows**
 ```powershell
-{{ .InstallCommandWindows }}
+iwr instl.sh/punctuations/tablespoon/windows | iex 
 ```
 
 **macOS**
 ```bash
-{{ .InstallCommandMacOS }}
+curl -sSL instl.sh/punctuations/tablespoon/macos | sudo bash   
 ```
 
 **Linux**
 ```bash
-{{ .InstallCommandLinux }}
+curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash  
 ```
 
 ----
