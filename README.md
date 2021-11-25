@@ -1,6 +1,74 @@
-# tablespoon
-A generator for git messages
+<h1 align="center">🥄 Tablespoon</h1>
+<p align="center">A simple generator for semantic git messages.</p>
 
+<p align="center">
+
+<a style="text-decoration: none" href="https://github.com/punctuations/tablespoon/releases">
+<img src="https://img.shields.io/github/v/release/punctuations/tablespoon?style=flat-square" alt="Latest Release">
+</a>
+
+<a style="text-decoration: none" href="https://github.com/punctuations/tablespoon/releases">
+<img src="https://img.shields.io/github/downloads/punctuations/tablespoon/total.svg?style=flat-square" alt="Downloads">
+</a>
+
+<a style="text-decoration: none" href="https://github.com/punctuations/tablespoon/stargazers">
+<img src="https://img.shields.io/github/stars/punctuations/tablespoon.svg?style=flat-square" alt="Stars">
+</a>
+
+<a style="text-decoration: none" href="https://github.com/punctuations/tablespoon/fork">
+<img src="https://img.shields.io/github/forks/punctuations/tablespoon.svg?style=flat-square" alt="Forks">
+</a>
+
+<a style="text-decoration: none" href="https://github.com/punctuations/tablespoon/issues">
+<img src="https://img.shields.io/github/issues/punctuations/tablespoon.svg?style=flat-square" alt="Issues">
+</a>
+
+<a style="text-decoration: none" href="https://opensource.org/licenses/MIT">
+<img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="License: MIT">
+</a>
+
+<br/>
+
+<a style="text-decoration: none" href="https://github.com/{{ .ProjectPath }}/releases">
+<img src="https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-informational?style=for-the-badge" alt="Downloads">
+</a>
+
+<br/>
+
+</p>
+
+----
+
+<p align="center">
+<strong><a href="#installation">Installation</a></strong>
+|
+<strong><a href="#CONTRIBUTING">Contributing</a></strong>
+</p>
+
+----
+
+Tablespoon is a simple generator which can generate semantic git commit messages of not only the highlights of the change, but everything.
+
+## Installation
+
+Run the following command in a terminal and you're ready to go!
+
+**Windows**
+```powershell
+{{ .InstallCommandWindows }}
+```
+
+**macOS**
+```bash
+{{ .InstallCommandMacOS }}
+```
+
+**Linux**
+```bash
+{{ .InstallCommandLinux }}
+```
+
+----
 
 ### Functionality
 - Writes semantic git messages for you:
