@@ -15,8 +15,7 @@ var commitCmd = &cobra.Command{
 		input := "test: test!!"
 		out, err := exec.Command(fmt.Sprintf("git commit -m %s", input)).Output()
 
-		// if there is an error with our execution
-		// handle it here
+		// if there is an error with our execution handle it here
 		if err != nil {
 			pterm.Error.Printf("%s", err)
 		}
