@@ -83,6 +83,6 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - aliases that are recommended: `tbl`, `tbs`, or `tbsp`
 
 ## OPTIONS
-[ ] [Javascript](https://github.com/njzydark/project-template-cli)
-[x] [Go](https://github.com/pterm/cli-template)
-[ ][Rust](https://github.com/rust-cli/cli-template)
+- [ ] [Javascript](https://github.com/njzydark/project-template-cli)
+- [x] [Go](https://github.com/pterm/cli-template)
+- [ ] [Rust](https://github.com/rust-cli/cli-template)
