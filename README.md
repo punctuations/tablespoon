@@ -37,7 +37,7 @@
 
 </p>
 
-----
+<br/>
 
 <p align="center">
 <strong><a href="#installation">Installation</a></strong>
@@ -45,7 +45,7 @@
 <strong><a href="#CONTRIBUTING">Contributing</a></strong>
 </p>
 
-----
+<br/>
 
 Tablespoon is a simple generator which can generate semantic git commit messages of not only the highlights of the change, but everything.
 
