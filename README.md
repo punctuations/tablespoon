@@ -76,6 +76,7 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
   <type>(<desc>): <summary>
   ```
 - Can generate them lone or generate them and create commit
+- all semantic-ness of this are based off of [the gist by joshbuchea](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716).
 
 ## TODO
 - Prompt for framework to determine importance of files? (For whichever goes in the short summary)
