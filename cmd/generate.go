@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// dateCmd represents the date command
+// generateCmd represents the generate command
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generates a commit message.",

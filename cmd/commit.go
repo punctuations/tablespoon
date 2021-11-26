@@ -7,10 +7,10 @@ import (
 	"os/exec"
 )
 
-// dateCmd represents the date command
+// commitCmd represents the commit command
 var commitCmd = &cobra.Command{
-	Use:   "generate",
-	Short: "Generates a commit message.",
+	Use:   "commit",
+	Short: "Generates a commit message & commits it.",
 	Run: func(cmd *cobra.Command, args []string) {
 		input := "test: test!!"
 		out, err := exec.Command(fmt.Sprintf("git commit -m %s", input)).Output()
