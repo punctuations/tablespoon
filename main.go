@@ -1,7 +1,7 @@
 package main
 
-import "github.com/pterm/cli-template/cmd"
+import "github.com/punctuations/tablespoon/cmd"
 
 func main() {
-    cmd.Execute()
+	cmd.Execute()
 }
