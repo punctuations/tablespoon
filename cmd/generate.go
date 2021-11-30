@@ -12,12 +12,12 @@ var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generates a commit message.",
 	Run: func(cmd *cobra.Command, args []string) {
-		_, err := exec.Command("git", "diff", "--numstat", "--output='../tmp/log.txt'").Output()
+		_, err := exec.Command("git", "diff", "--numstat", "--output='./tmp/log.txt'").Output()
 		if err != nil {
 			pterm.Error.Println(err)
 		}
 
-		content, readErr := ioutil.ReadFile("../tmp/log.txt")
+		content, readErr := ioutil.ReadFile("./tmp/log.txt")
 		if readErr != nil {
 			pterm.Error.Println(readErr)
 		}
