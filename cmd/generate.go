@@ -23,10 +23,13 @@ var generateCmd = &cobra.Command{
 
 		for i := range out {
 			outInt, _ := strconv.Atoi(out[i])
-			if outInt%3 != 0 {
-				fmt.Println(out[i])
-			}
-			fmt.Println(false)
+			//if outInt == 0 {
+			//	fmt.Println(out[i])
+			//}
+			//if outInt % 3 != 0 {
+			//	fmt.Println(out[i])
+			//}
+			fmt.Println(outInt)
 		}
 
 		pterm.Success.Println(out[0])
