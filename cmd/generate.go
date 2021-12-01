@@ -5,6 +5,7 @@ import (
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -21,7 +22,11 @@ var generateCmd = &cobra.Command{
 		out := strings.Fields(string(content))
 
 		for i := range out {
-			fmt.Println(out[i])
+			outInt, _ := strconv.Atoi(out[i])
+			if outInt%3 != 0 {
+				fmt.Println(out[i])
+			}
+			fmt.Println(false)
 		}
 
 		pterm.Success.Println(out[0])
