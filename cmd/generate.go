@@ -18,7 +18,7 @@ var generateCmd = &cobra.Command{
 			pterm.Error.Println(err)
 		}
 
-		out := strings.Split(string(content), " ")
+		out := strings.Fields(string(content))
 
 		for i := range out {
 			fmt.Println(out[i])
