@@ -21,18 +21,22 @@ var generateCmd = &cobra.Command{
 
 		out := strings.Fields(string(content))
 
+		var diffs []string
+
 		for i := range out {
 			outInt, _ := strconv.Atoi(out[i])
-			//if outInt == 0 {
-			//	fmt.Println(out[i])
-			//}
-			//if outInt % 3 != 0 {
-			//	fmt.Println(out[i])
-			//}
-			fmt.Println(outInt)
+			prevInt, _ := strconv.Atoi(out[i-1])
+			if (i+1)%3 != 0 {
+				if i%2 == 0 {
+					diffs = append(diffs, []string{string(rune(outInt + prevInt)), out[i+1]}...)
+				}
+
+				fmt.Println(outInt)
+			}
+			fmt.Println(false)
 		}
 
-		pterm.Success.Println(out[0])
+		pterm.Success.Println(diffs)
 		//format, _ := cmd.Flags().GetString("format")
 		//letters := pterm.NewLettersFromString(time.Now().Format(format))
 		//pterm.DefaultBigText.WithLetters(letters).Render()
