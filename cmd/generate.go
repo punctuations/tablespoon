@@ -29,10 +29,11 @@ var generateCmd = &cobra.Command{
 				if (i+1)%2 == 0 {
 					prevInt, _ := strconv.Atoi(out[i-1])
 					changes := outInt + prevInt
+					fmt.Println(outInt)
+					fmt.Println(prevInt)
 					diffs = append(diffs, []string{string(rune(changes)), out[i+1]}...)
 				}
-
-				fmt.Println(outInt)
+				//fmt.Println(outInt)
 			}
 			fmt.Println(false)
 		}
