@@ -24,18 +24,18 @@ var generateCmd = &cobra.Command{
 		var diffs []string
 
 		for i := range out {
-			outInt, _ := strconv.Atoi(out[i])
+			deletions, _ := strconv.Atoi(out[i])
 			if (i+1)%3 != 0 {
 				if (i+1)%2 == 0 {
-					prevInt, _ := strconv.Atoi(out[i-1])
-					changes := outInt + prevInt
-					fmt.Println(outInt)
-					fmt.Println(prevInt)
+					additions, _ := strconv.Atoi(out[i-1])
+					changes := deletions + additions
+					fmt.Println(deletions)
+					fmt.Println(additions)
 					diffs = append(diffs, []string{string(rune(changes)), out[i+1]}...)
 				}
 				//fmt.Println(outInt)
 			}
-			fmt.Println(false)
+			fmt.Println(out[i], " - Not outputted")
 		}
 
 		pterm.Success.Println(diffs)
