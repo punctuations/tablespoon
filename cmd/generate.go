@@ -31,6 +31,7 @@ var generateCmd = &cobra.Command{
 					changes := deletions + additions
 					fmt.Println(deletions)
 					fmt.Println(additions)
+					fmt.Println(additions, " + ", deletions, " = ", changes)
 					diffs = append(diffs, []string{string(rune(changes)), out[i+1]}...)
 				}
 				//fmt.Println(outInt)
