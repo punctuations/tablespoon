@@ -51,7 +51,7 @@ var generateCmd = &cobra.Command{
 			}
 		}
 
-		var selected []string
+		selected := []string{""} // initializing value
 
 		for n := range diffs {
 			s, _ := strconv.Atoi(selected[0])
