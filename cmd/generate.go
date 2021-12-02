@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 	"os/exec"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -21,7 +22,8 @@ var generateCmd = &cobra.Command{
 
 		out := strings.Fields(string(content))
 
-		var diffs []string
+		var diffs []int
+		var files []string
 
 		for i := range out {
 			deletions, _ := strconv.Atoi(out[i])
@@ -31,12 +33,15 @@ var generateCmd = &cobra.Command{
 					if pattern.MatchString(out[i-1]) {
 						additions, _ := strconv.Atoi(out[i-1])
 						changes := deletions + additions
-						diffs = append(diffs, []string{strconv.Itoa(changes), out[i+1]}...)
+						diffs = append(diffs, []int{changes}...)
+						files = append(files, []string{out[i+1]}...)
 					}
 				}
 				//fmt.Println(outInt)
 			}
 		}
+
+		sort.Ints(diffs[:])
 
 		pterm.Success.Println(diffs)
 		//format, _ := cmd.Flags().GetString("format")
