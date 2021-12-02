@@ -28,7 +28,8 @@ var generateCmd = &cobra.Command{
 			if (i+1)%3 != 0 {
 				if (i+1)%2 == 0 {
 					prevInt, _ := strconv.Atoi(out[i-1])
-					diffs = append(diffs, []string{string(rune(outInt + prevInt)), out[i+1]}...)
+					changes := outInt + prevInt
+					diffs = append(diffs, []string{string(rune(changes)), out[i+1]}...)
 				}
 
 				fmt.Println(outInt)
