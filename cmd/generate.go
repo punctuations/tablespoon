@@ -34,8 +34,9 @@ var generateCmd = &cobra.Command{
 					diffs = append(diffs, []string{string(rune(changes)), out[i+1]}...)
 				}
 				//fmt.Println(outInt)
+			} else {
+				fmt.Println(out[i], " - Not outputted")
 			}
-			fmt.Println(out[i], " - Not outputted")
 		}
 
 		pterm.Success.Println(diffs)
