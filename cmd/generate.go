@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"os/exec"
@@ -32,15 +31,10 @@ var generateCmd = &cobra.Command{
 					if pattern.MatchString(out[i-1]) {
 						additions, _ := strconv.Atoi(out[i-1])
 						changes := deletions + additions
-						fmt.Println(deletions)
-						fmt.Println(additions)
-						fmt.Println(additions, " + ", deletions, " = ", changes)
 						diffs = append(diffs, []string{strconv.Itoa(changes), out[i+1]}...)
 					}
 				}
 				//fmt.Println(outInt)
-			} else {
-				fmt.Println(out[i], " - Not outputted")
 			}
 		}
 
