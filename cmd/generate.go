@@ -25,9 +25,9 @@ var generateCmd = &cobra.Command{
 
 		for i := range out {
 			outInt, _ := strconv.Atoi(out[i])
-			prevInt, _ := strconv.Atoi(out[i-1])
 			if (i+1)%3 != 0 {
 				if (i+1)%2 == 0 {
+					prevInt, _ := strconv.Atoi(out[i-1])
 					diffs = append(diffs, []string{string(rune(outInt + prevInt)), out[i+1]}...)
 				}
 
