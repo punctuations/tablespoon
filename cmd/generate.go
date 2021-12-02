@@ -5,6 +5,7 @@ import (
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"os/exec"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -25,14 +26,17 @@ var generateCmd = &cobra.Command{
 
 		for i := range out {
 			deletions, _ := strconv.Atoi(out[i])
+			pattern := regexp.MustCompile("0|[1-9][0-9]*")
 			if (i+1)%3 != 0 {
-				if (i+1)%4 == 2 {
-					additions, _ := strconv.Atoi(out[i-1])
-					changes := deletions + additions
-					fmt.Println(deletions)
-					fmt.Println(additions)
-					fmt.Println(additions, " + ", deletions, " = ", changes)
-					diffs = append(diffs, []string{strconv.Itoa(changes), out[i+1]}...)
+				if i == 1 {
+					if pattern.MatchString(out[i-1]) {
+						additions, _ := strconv.Atoi(out[i-1])
+						changes := deletions + additions
+						fmt.Println(deletions)
+						fmt.Println(additions)
+						fmt.Println(additions, " + ", deletions, " = ", changes)
+						diffs = append(diffs, []string{strconv.Itoa(changes), out[i+1]}...)
+					}
 				}
 				//fmt.Println(outInt)
 			} else {
