@@ -26,7 +26,7 @@ var generateCmd = &cobra.Command{
 		for i := range out {
 			deletions, _ := strconv.Atoi(out[i])
 			if (i+1)%3 != 0 {
-				if (i+1)%2 == 0 {
+				if (i+1)%4 == 2 {
 					additions, _ := strconv.Atoi(out[i-1])
 					changes := deletions + additions
 					fmt.Println(deletions)
