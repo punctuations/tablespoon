@@ -62,6 +62,50 @@ var generateCmd = &cobra.Command{
 			}
 		}
 
+		var message string
+		var verb string
+
+		switch {
+		case adds-dels == 0:
+			message = "fix"
+			verb = "fix"
+		case adds-dels <= 5:
+			message = "fix"
+			verb = "fix"
+		case adds-dels >= -5:
+			message = "fix"
+			verb = "fix"
+		case adds-dels > 5:
+			message = "feat"
+			verb = "add"
+		case adds-dels < -5:
+			message = "feat"
+			verb = "remove"
+
+		default:
+			message = "feat"
+			verb = "add"
+		}
+
+		if adds-dels == 0 {
+			message = "fix"
+			verb = "fix"
+		} else if adds-dels <= 5 {
+			message = "fix"
+			verb = "fix"
+		} else if adds-dels >= -5 {
+			message = "fix"
+			verb = "fix"
+		} else if adds-dels > 5 {
+			message = "feat"
+			verb = "add"
+		} else if adds-dels < -5 {
+			message = "feat"
+			verb = "remove"
+		}
+
+		pterm.Success.Println(message, "(", selected[1], "): ", verb)
+
 		pterm.Success.Println(selected, " + ", adds, " - ", dels)
 		//format, _ := cmd.Flags().GetString("format")
 		//letters := pterm.NewLettersFromString(time.Now().Format(format))
