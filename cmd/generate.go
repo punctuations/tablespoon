@@ -104,7 +104,7 @@ var generateCmd = &cobra.Command{
 			verb = "remove"
 		}
 
-		pterm.Success.Println(message, "(", selected[1], "): ", verb)
+		pterm.Success.Printf("%s(%s): %s", message, selected[1], verb)
 
 		pterm.Success.Println(selected, " + ", adds, " - ", dels)
 		//format, _ := cmd.Flags().GetString("format")
