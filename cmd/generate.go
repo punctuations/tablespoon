@@ -5,7 +5,6 @@ import (
 	"github.com/manifoldco/promptui"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
-
 	"os/exec"
 	"regexp"
 	"strconv"
@@ -17,26 +16,29 @@ var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generates a commit message.",
 	Run: func(cmd *cobra.Command, args []string) {
+		full, _ := cmd.Flags().GetBool("full")
 		content, err := exec.Command("git", "diff", "--numstat").Output()
 		if err != nil {
 			pterm.Error.Println(err)
 		}
 
 		out := strings.Fields(string(content))
-		message, file, verb, adds, dels := rules(out)
+		message, file, verb, files, diffs := rules(out)
 
-		pterm.Success.Printf("%s(%s): %s\n", message, file, verb)
+		fmt.Printf("%s(%s): %s\n", message, file, verb)
 
-		pterm.Success.Println(file, " + ", adds, " - ", dels)
-		//format, _ := cmd.Flags().GetString("format")
-		//letters := pterm.NewLettersFromString(time.Now().Format(format))
-		//pterm.DefaultBigText.WithLetters(letters).Render()
+		if full {
+			for f := range files {
+				fmt.Println(files[f], "-", diffs[f], "changes")
+			}
+		}
+		pterm.Success.Println("Command Successfully Executed")
 	},
 }
 
-func rules(input []string) (message string, file string, verb string, adds int, dels int) {
-	var diffs []int
-	var files []string
+func rules(input []string) (message string, file string, verb string, files []string, diffs []int) {
+	var adds int
+	var dels int
 
 	for i := range input {
 		deletions, _ := strconv.Atoi(input[i])
@@ -111,4 +113,6 @@ func rules(input []string) (message string, file string, verb string, adds int, 
 
 func init() {
 	rootCmd.AddCommand(generateCmd)
+
+	generateCmd.Flags().BoolP("full", "f", false, "full length commit")
 }
