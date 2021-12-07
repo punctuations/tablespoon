@@ -1,8 +1,11 @@
 package cmd
 
 import (
+	"fmt"
+	"github.com/manifoldco/promptui"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
+
 	"os/exec"
 	"regexp"
 	"strconv"
@@ -22,7 +25,7 @@ var generateCmd = &cobra.Command{
 		out := strings.Fields(string(content))
 		message, file, verb, adds, dels := rules(out)
 
-		pterm.Success.Printf("%s(%s): %s", message, file, verb)
+		pterm.Success.Printf("%s(%s): %s\n", message, file, verb)
 
 		pterm.Success.Println(file, " + ", adds, " - ", dels)
 		//format, _ := cmd.Flags().GetString("format")
@@ -71,26 +74,34 @@ func rules(input []string) (message string, file string, verb string, adds int, 
 		}
 	}
 
+	prompt := promptui.Select{
+		Label: fmt.Sprintf("Select type for %s", selected[1]),
+		Items: []string{"feat", "fix", "docs", "style", "refactor",
+			"test", "chore"},
+	}
+
+	_, message, err := prompt.Run()
+
+	if err != nil {
+		pterm.Error.Println(err)
+	}
+
 	switch {
-	case adds-dels == 0:
-		message = "fix"
+	case adds-dels == 0 && message == "fix":
 		verb = "fix"
-	case adds-dels <= 5:
-		message = "fix"
-		verb = "fix"
-	case adds-dels >= -5:
-		message = "fix"
+	case adds-dels <= 5 && message == "fix":
+		verb = "add"
+	case adds-dels >= -5 && message == "fix":
+		verb = "remove"
+	case message == "fix":
 		verb = "fix"
 	case adds-dels > 5:
-		message = "feat"
 		verb = "add"
 	case adds-dels < -5:
-		message = "feat"
 		verb = "remove"
 
 	default:
-		message = "feat"
-		verb = "add"
+		verb = "change"
 	}
 
 	file = selected[1]
