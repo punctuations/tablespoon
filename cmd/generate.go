@@ -61,7 +61,6 @@ func rules(input []string) (message string, file string, verb string, files []st
 					}
 				}
 			}
-			//fmt.Println(outInt)
 		}
 	}
 
@@ -106,7 +105,14 @@ func rules(input []string) (message string, file string, verb string, files []st
 		verb = "change"
 	}
 
-	file = selected[1]
+	t := []string{""}
+
+	if len(strings.Split(selected[1], "/")) <= 2 {
+		file = selected[1]
+	} else {
+		t = []string{strings.Split(selected[1], "/")[len(strings.Split(selected[1], "/"))-1], strings.Split(selected[1], "/")[len(strings.Split(selected[1], "/"))-2]}
+		file = fmt.Sprintf("%s/%s", t[0], t[1])
+	}
 
 	return
 }
