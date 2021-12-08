@@ -41,7 +41,7 @@ var generateCmd = &cobra.Command{
 				pterm.Error.Println(emailErr)
 			}
 
-			fmt.Printf("\nAuthored-by: %s <%s>", username, email)
+			fmt.Printf("\nAuthored-by: %s <%s>", strings.Fields(string(username))[0], strings.Fields(string(email))[0])
 		}
 		pterm.Success.Println("Command Successfully Executed")
 	},
