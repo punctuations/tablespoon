@@ -31,6 +31,17 @@ var generateCmd = &cobra.Command{
 			for f := range files {
 				fmt.Println(files[f], "-", diffs[f], "changes")
 			}
+			username, usernameErr := exec.Command("git", "config", "user.name").Output()
+			email, emailErr := exec.Command("git", "config", "user.email").Output()
+
+			if usernameErr != nil {
+				pterm.Error.Println(usernameErr)
+			}
+			if emailErr != nil {
+				pterm.Error.Println(emailErr)
+			}
+
+			fmt.Printf("Authored-by: %s <%s>", username, email)
 		}
 		pterm.Success.Println("Command Successfully Executed")
 	},
