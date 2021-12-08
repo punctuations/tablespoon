@@ -25,11 +25,11 @@ var generateCmd = &cobra.Command{
 		out := strings.Fields(string(content))
 		message, file, verb, files, diffs := rules(out)
 
-		fmt.Printf("%s(%s): %s\n", message, file, verb)
+		fmt.Printf("%s(%s): %s\n\n\n", message, file, verb)
 
 		if full {
 			for f := range files {
-				fmt.Println(files[f], "-", diffs[f], "changes")
+				fmt.Println("-", files[f], "-", diffs[f], "changes")
 			}
 			username, usernameErr := exec.Command("git", "config", "user.name").Output()
 			email, emailErr := exec.Command("git", "config", "user.email").Output()

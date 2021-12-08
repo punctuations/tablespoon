@@ -13,16 +13,35 @@ var commitCmd = &cobra.Command{
 	Use:   "commit",
 	Short: "Generates a commit message & commits it.",
 	Run: func(cmd *cobra.Command, args []string) {
+		full, _ := cmd.Flags().GetBool("full")
 		content, err := exec.Command("git", "diff", "--numstat").Output()
 		if err != nil {
 			pterm.Error.Println(err)
 		}
 
 		out := strings.Fields(string(content))
-		message, file, verb, _, _ := rules(out)
+		message, file, verb, files, diffs := rules(out)
 		input := fmt.Sprintf("%s(%s): %s", message, file, verb)
+		desc := "" // init
 
-		commitOut, commitErr := exec.Command("git", "commit", "-m", fmt.Sprintf("'%s'", input)).Output()
+		if full {
+			for f := range files {
+				desc = desc + fmt.Sprintf("- %s - %d changes\n", files[f], diffs[f])
+			}
+			username, usernameErr := exec.Command("git", "config", "user.name").Output()
+			email, emailErr := exec.Command("git", "config", "user.email").Output()
+
+			if usernameErr != nil {
+				pterm.Error.Println(usernameErr)
+			}
+			if emailErr != nil {
+				pterm.Error.Println(emailErr)
+			}
+
+			desc = desc + fmt.Sprintf("\nAuthored-by: %s <%s>\n", strings.Fields(string(username))[0], strings.Fields(string(email))[0])
+		}
+
+		commitOut, commitErr := exec.Command("git", "commit", "-m", fmt.Sprintf("'%s\n\n%s'", input, desc)).Output()
 
 		// if there is an error with our execution handle it here
 		if err != nil {
@@ -38,4 +57,6 @@ var commitCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(commitCmd)
+
+	generateCmd.Flags().BoolP("full", "f", false, "full length commit")
 }
