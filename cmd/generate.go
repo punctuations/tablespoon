@@ -112,7 +112,23 @@ func rules(input []string) (message string, file string, short string, files []s
 		pterm.Error.Println(diffErr)
 	}
 
-	short = strings.Split(strings.Split(string(wordDiffs), "tbsp: ")[1], "\n")[0]
+	var in string
+
+	if len(strings.Split(string(wordDiffs), "tbsp: ")[1]) < 2 {
+		userShort := promptui.Prompt{
+			Label:   fmt.Sprintf("What was changed in %s?", file),
+			Default: in,
+		}
+
+		shortened, shortErr := userShort.Run()
+		if shortErr != nil {
+			pterm.Error.Println(shortErr)
+		}
+
+		short = shortened
+	} else {
+		short = strings.Split(strings.Split(string(wordDiffs), "tbsp: ")[1], "\n")[0]
+	}
 
 	return
 }
