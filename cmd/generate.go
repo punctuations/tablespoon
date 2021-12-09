@@ -23,9 +23,9 @@ var generateCmd = &cobra.Command{
 		}
 
 		out := strings.Fields(string(content))
-		message, file, verb, files, diffs := rules(out)
+		message, file, short, files, diffs := rules(out)
 
-		fmt.Printf("%s(%s): %s\n\n\n", message, file, verb)
+		fmt.Printf("%s(%s): %s\n\n\n", message, file, short)
 
 		if full {
 			for f := range files {
@@ -47,7 +47,7 @@ var generateCmd = &cobra.Command{
 	},
 }
 
-func rules(input []string) (message string, file string, verb string, files []string, diffs []int) {
+func rules(input []string) (message string, file string, short string, files []string, diffs []int) {
 	var adds int
 	var dels int
 
@@ -98,24 +98,6 @@ func rules(input []string) (message string, file string, verb string, files []st
 		pterm.Error.Println(err)
 	}
 
-	switch {
-	case adds-dels == 0 && message == "fix":
-		verb = "fix"
-	case adds-dels <= 5 && message == "fix":
-		verb = "add"
-	case adds-dels >= -5 && message == "fix":
-		verb = "remove"
-	case message == "fix":
-		verb = "fix"
-	case adds-dels > 5:
-		verb = "add"
-	case adds-dels < -5:
-		verb = "remove"
-
-	default:
-		verb = "change"
-	}
-
 	t := []string{""}
 
 	if len(strings.Split(selected[1], "/")) <= 2 {
@@ -124,6 +106,13 @@ func rules(input []string) (message string, file string, verb string, files []st
 		t = []string{strings.Split(selected[1], "/")[len(strings.Split(selected[1], "/"))-1], strings.Split(selected[1], "/")[len(strings.Split(selected[1], "/"))-2]}
 		file = fmt.Sprintf("%s/%s", t[0], t[1])
 	}
+
+	wordDiffs, diffErr := exec.Command("git", "diff", "--word-diff=porcelain", file).Output()
+	if diffErr != nil {
+		pterm.Error.Println(diffErr)
+	}
+
+	short = strings.Split(strings.Split(string(wordDiffs), "tbsp: ")[1], "\n")[0]
 
 	return
 }
