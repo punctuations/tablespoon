@@ -114,7 +114,7 @@ func rules(input []string) (message string, file string, short string, files []s
 
 	var in string
 
-	if len(strings.Split(string(wordDiffs), "tbsp: ")[1]) < 2 {
+	if len(strings.Split(string(wordDiffs), "tbsp: ")) < 2 {
 		userShort := promptui.Prompt{
 			Label:   fmt.Sprintf("What was changed in %s?", file),
 			Default: in,
