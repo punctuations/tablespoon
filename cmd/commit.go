@@ -14,13 +14,14 @@ var commitCmd = &cobra.Command{
 	Short: "Generates a commit message & commits it.",
 	Run: func(cmd *cobra.Command, args []string) {
 		full, _ := cmd.Flags().GetBool("full")
+		ncomment, _ := cmd.Flags().GetBool("no-comment")
 		content, err := exec.Command("git", "diff", "--numstat").Output()
 		if err != nil {
 			pterm.Error.Println(err)
 		}
 
 		out := strings.Fields(string(content))
-		message, file, verb, files, diffs := rules(out)
+		message, file, verb, files, diffs := rules(out, ncomment)
 		input := fmt.Sprintf("%s(%s): %s", message, file, verb)
 		desc := "" // init
 
@@ -59,4 +60,5 @@ func init() {
 	rootCmd.AddCommand(commitCmd)
 
 	commitCmd.Flags().BoolP("full", "f", false, "full length commit")
+	commitCmd.Flags().BoolP("no-comment", "c", false, "prompt user for short description")
 }

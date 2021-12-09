@@ -17,13 +17,14 @@ var generateCmd = &cobra.Command{
 	Short: "Generates a commit message.",
 	Run: func(cmd *cobra.Command, args []string) {
 		full, _ := cmd.Flags().GetBool("full")
+		ncomment, _ := cmd.Flags().GetBool("no-comment")
 		content, err := exec.Command("git", "diff", "--numstat").Output()
 		if err != nil {
 			pterm.Error.Println(err)
 		}
 
 		out := strings.Fields(string(content))
-		message, file, short, files, diffs := rules(out)
+		message, file, short, files, diffs := rules(out, ncomment)
 
 		fmt.Printf("%s(%s): %s\n\n\n", message, file, short)
 
@@ -47,7 +48,7 @@ var generateCmd = &cobra.Command{
 	},
 }
 
-func rules(input []string) (message string, file string, short string, files []string, diffs []int) {
+func rules(input []string, ncomment bool) (message string, file string, short string, files []string, diffs []int) {
 	var adds int
 	var dels int
 
@@ -114,7 +115,8 @@ func rules(input []string) (message string, file string, short string, files []s
 
 	var in string
 
-	if len(strings.Split(string(wordDiffs), "tbsp: ")) < 2 {
+	//tbsp: add new `--no-comment flag`
+	if ncomment {
 		userShort := promptui.Prompt{
 			Label:   fmt.Sprintf("What was changed in %s?", file),
 			Default: in,
@@ -127,9 +129,22 @@ func rules(input []string) (message string, file string, short string, files []s
 
 		short = shortened
 	} else {
-		short = strings.Split(strings.Split(string(wordDiffs), "tbsp: ")[1], "\n")[0]
-	}
+		if len(strings.Split(string(wordDiffs), "tbsp: ")) < 2 {
+			userShort := promptui.Prompt{
+				Label:   fmt.Sprintf("What was changed in %s?", file),
+				Default: in,
+			}
 
+			shortened, shortErr := userShort.Run()
+			if shortErr != nil {
+				pterm.Error.Println(shortErr)
+			}
+
+			short = shortened
+		} else {
+			short = strings.Split(strings.Split(string(wordDiffs), "tbsp: ")[1], "\n")[0]
+		}
+	}
 	return
 }
 
@@ -137,4 +152,5 @@ func init() {
 	rootCmd.AddCommand(generateCmd)
 
 	generateCmd.Flags().BoolP("full", "f", false, "full length commit")
+	commitCmd.Flags().BoolP("no-comment", "c", false, "prompt user for short description")
 }
