@@ -23,7 +23,7 @@ var commitCmd = &cobra.Command{
 		out := strings.Fields(string(content))
 		message, file, short, files, diffs := rules(out, ncomment)
 		input := fmt.Sprintf("%s(%s): %s", message, file, short)
-		desc := "" // init
+		desc := "\n\n" //tbsp: init desc var
 
 		if full {
 			for f := range files {

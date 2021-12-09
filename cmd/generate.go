@@ -29,6 +29,7 @@ var generateCmd = &cobra.Command{
 		fmt.Printf("%s(%s): %s\n", message, file, short)
 
 		if full {
+			fmt.Printf("\n\n")
 			for f := range files {
 				fmt.Println("-", files[f], "-", diffs[f], "changes")
 			}
@@ -127,7 +128,7 @@ func rules(input []string, ncomment bool) (message string, file string, short st
 			pterm.Error.Println(shortErr)
 		}
 
-		short = "\n\n" + shortened
+		short = shortened
 	} else {
 		if len(strings.Split(string(wordDiffs), "tbsp: ")) < 2 {
 			userShort := promptui.Prompt{
@@ -140,9 +141,9 @@ func rules(input []string, ncomment bool) (message string, file string, short st
 				pterm.Error.Println(shortErr)
 			}
 
-			short = "\n\n" + shortened
+			short = shortened
 		} else {
-			short = "\n\n" + strings.Split(strings.Split(string(wordDiffs), "tbsp: ")[1], "\n")[0]
+			short = strings.Split(strings.Split(string(wordDiffs), "tbsp: ")[1], "\n")[0]
 		}
 	}
 	return
