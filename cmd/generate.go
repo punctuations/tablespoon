@@ -152,5 +152,5 @@ func init() {
 	rootCmd.AddCommand(generateCmd)
 
 	generateCmd.Flags().BoolP("full", "f", false, "full length commit")
-	commitCmd.Flags().BoolP("no-comment", "c", false, "prompt user for short description")
+	generateCmd.Flags().BoolP("no-comment", "c", false, "prompt user for short description")
 }
