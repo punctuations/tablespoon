@@ -58,5 +58,5 @@ var commitCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(commitCmd)
 
-	generateCmd.Flags().BoolP("full", "f", false, "full length commit")
+	commitCmd.Flags().BoolP("full", "f", false, "full length commit")
 }
