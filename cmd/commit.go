@@ -21,8 +21,8 @@ var commitCmd = &cobra.Command{
 		}
 
 		out := strings.Fields(string(content))
-		message, file, verb, files, diffs := rules(out, ncomment)
-		input := fmt.Sprintf("%s(%s): %s", message, file, verb)
+		message, file, short, files, diffs := rules(out, ncomment)
+		input := fmt.Sprintf("%s(%s): %s", message, file, short)
 		desc := "" // init
 
 		if full {
