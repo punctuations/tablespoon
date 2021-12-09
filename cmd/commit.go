@@ -17,7 +17,7 @@ var commitCmd = &cobra.Command{
 		ncomment, _ := cmd.Flags().GetBool("no-comment")
 		content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
 		if err != nil {
-			pterm.Error.Println(err)
+			pterm.Error.Println("Error T0:", err)
 		}
 
 		out := strings.Fields(string(content))
@@ -33,10 +33,10 @@ var commitCmd = &cobra.Command{
 			email, emailErr := exec.Command("git", "config", "user.email").Output()
 
 			if usernameErr != nil {
-				pterm.Error.Println(usernameErr)
+				pterm.Error.Println("Error T2:", usernameErr)
 			}
 			if emailErr != nil {
-				pterm.Error.Println(emailErr)
+				pterm.Error.Println("Error T2:", emailErr)
 			}
 
 			desc = desc + fmt.Sprintf("\nAuthored-by: %s <%s>\n", strings.Fields(string(username))[0], strings.Fields(string(email))[0])
@@ -46,7 +46,7 @@ var commitCmd = &cobra.Command{
 
 		// if there is an error with our execution handle it here
 		if err != nil {
-			pterm.Error.Println(commitErr)
+			pterm.Error.Println("Error T1:", commitErr)
 		}
 
 		output := string(commitOut[:])

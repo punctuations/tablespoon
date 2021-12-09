@@ -20,7 +20,7 @@ var generateCmd = &cobra.Command{
 		ncomment, _ := cmd.Flags().GetBool("no-comment")
 		content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
 		if err != nil {
-			pterm.Error.Println(err)
+			pterm.Error.Println("Error T0:", err)
 		}
 
 		out := strings.Fields(string(content))
@@ -37,10 +37,10 @@ var generateCmd = &cobra.Command{
 			email, emailErr := exec.Command("git", "config", "user.email").Output()
 
 			if usernameErr != nil {
-				pterm.Error.Println(usernameErr)
+				pterm.Error.Println("Error T2:", usernameErr)
 			}
 			if emailErr != nil {
-				pterm.Error.Println(emailErr)
+				pterm.Error.Println("Error T2:", emailErr)
 			}
 
 			fmt.Printf("\nAuthored-by: %s <%s>\n", strings.Fields(string(username))[0], strings.Fields(string(email))[0])
@@ -52,6 +52,9 @@ var generateCmd = &cobra.Command{
 func rules(input []string, ncomment bool) (message string, file string, short string, files []string, diffs []int) {
 	var adds int
 	var dels int
+	if len(input) <= 0 {
+		pterm.Error.Println("Error T0: No differences detected.")
+	}
 
 	for i := range input {
 		deletions, _ := strconv.Atoi(input[i])
@@ -97,7 +100,7 @@ func rules(input []string, ncomment bool) (message string, file string, short st
 	_, message, err := prompt.Run()
 
 	if err != nil {
-		pterm.Error.Println(err)
+		pterm.Error.Println("Error T5:", err)
 	}
 
 	t := []string{""}
@@ -111,7 +114,7 @@ func rules(input []string, ncomment bool) (message string, file string, short st
 
 	wordDiffs, diffErr := exec.Command("git", "diff", "--word-diff=porcelain", file).Output()
 	if diffErr != nil {
-		pterm.Error.Println(diffErr)
+		pterm.Error.Println("Error T3:", diffErr)
 	}
 
 	var in string
@@ -125,7 +128,7 @@ func rules(input []string, ncomment bool) (message string, file string, short st
 
 		shortened, shortErr := userShort.Run()
 		if shortErr != nil {
-			pterm.Error.Println(shortErr)
+			pterm.Error.Println("Error T4:", shortErr)
 		}
 
 		short = shortened
@@ -138,7 +141,7 @@ func rules(input []string, ncomment bool) (message string, file string, short st
 
 			shortened, shortErr := userShort.Run()
 			if shortErr != nil {
-				pterm.Error.Println(shortErr)
+				pterm.Error.Println("Error T4:", shortErr)
 			}
 
 			short = shortened
