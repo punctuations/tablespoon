@@ -42,7 +42,7 @@ var commitCmd = &cobra.Command{
 			desc = desc + fmt.Sprintf("\nAuthored-by: %s <%s>\n", strings.Fields(string(username))[0], strings.Fields(string(email))[0])
 		}
 
-		commitOut, commitErr := exec.Command("git", "commit", "-m", fmt.Sprintf("'%s\n\n%s'", input, desc)).Output()
+		commitOut, commitErr := exec.Command("git", "commit", "-m", fmt.Sprintf("%s%s", input, desc)).Output()
 
 		// if there is an error with our execution handle it here
 		if err != nil {
