@@ -60,5 +60,5 @@ func init() {
 	rootCmd.AddCommand(commitCmd)
 
 	commitCmd.Flags().BoolP("full", "f", false, "full length commit")
-	commitCmd.Flags().BoolP("no-comment", "c", false, "prompt user for short description")
+	commitCmd.Flags().BoolP("no-comment", "n", false, "prompt user for short description")
 }
