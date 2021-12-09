@@ -18,7 +18,7 @@ var generateCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		full, _ := cmd.Flags().GetBool("full")
 		ncomment, _ := cmd.Flags().GetBool("no-comment")
-		content, err := exec.Command("git", "diff", "--numstat").Output()
+		content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
 		if err != nil {
 			pterm.Error.Println(err)
 		}
