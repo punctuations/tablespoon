@@ -52,6 +52,8 @@ var generateCmd = &cobra.Command{
 func rules(input []string, ncomment bool) (message string, file string, short string, files []string, diffs []int) {
 	var adds int
 	var dels int
+
+	//tbsp: Add error handling if no changes
 	if len(input) <= 0 {
 		pterm.Error.Println("Error T0: No differences detected.")
 	}
