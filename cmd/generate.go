@@ -17,10 +17,18 @@ var generateCmd = &cobra.Command{
 	Short: "Generates a commit message.",
 	Run: func(cmd *cobra.Command, args []string) {
 		full, _ := cmd.Flags().GetBool("full")
+		unstaged, _ := cmd.Flags().GetBool("unstaged")
 		ncomment, _ := cmd.Flags().GetBool("no-comment")
 		selectFlag, _ := cmd.Flags().GetString("select")
 		coauth, _ := cmd.Flags().GetString("co-author")
-		content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
+
+		var stage string
+		if unstaged {
+			stage = ""
+		} else {
+			stage = "--staged"
+		}
+		content, err := exec.Command("git", "diff", stage, "--numstat").Output()
 
 		//tbsp: exit if error
 		if err != nil {
@@ -192,6 +200,7 @@ func init() {
 	rootCmd.AddCommand(generateCmd)
 
 	generateCmd.Flags().BoolP("full", "f", false, "full length commit")
+	generateCmd.Flags().BoolP("unstaged", "u", false, "generate message for all changed files")
 	generateCmd.Flags().BoolP("no-comment", "n", false, "prompt user for short description")
 	generateCmd.Flags().StringP("select", "s", "", "choose file to showcase in short commit message")
 	generateCmd.Flags().StringP("co-author", "c", "", "add co-author to commit")

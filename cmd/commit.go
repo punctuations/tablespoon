@@ -14,10 +14,20 @@ var commitCmd = &cobra.Command{
 	Short: "Generates a commit message & commits it.",
 	Run: func(cmd *cobra.Command, args []string) {
 		full, _ := cmd.Flags().GetBool("full")
+		unstaged, _ := cmd.Flags().GetBool("unstaged")
 		ncomment, _ := cmd.Flags().GetBool("no-comment")
 		selectFlag, _ := cmd.Flags().GetString("select")
 		coauth, _ := cmd.Flags().GetString("co-author")
-		content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
+
+		//tbsp: add optional `--unstaged` flag
+		var stage string
+		if unstaged {
+			stage = ""
+		} else {
+			stage = "--staged"
+		}
+
+		content, err := exec.Command("git", "diff", stage, "--numstat").Output()
 		if err != nil {
 			pterm.Error.Println("Error T0:", err)
 			return
@@ -75,6 +85,7 @@ func init() {
 	rootCmd.AddCommand(commitCmd)
 
 	commitCmd.Flags().BoolP("full", "f", false, "full length commit")
+	commitCmd.Flags().BoolP("unstaged", "u", false, "generate message for all changed files")
 	commitCmd.Flags().BoolP("no-comment", "n", false, "prompt user for short description")
 	commitCmd.Flags().StringP("select", "s", "", "choose file to showcase in short commit message")
 	commitCmd.Flags().StringP("co-author", "c", "", "add co-author to commit")
