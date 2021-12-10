@@ -1,11 +1,13 @@
 package cmd
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/manifoldco/promptui"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
+	"io/ioutil"
 	"os/exec"
 	"regexp"
 	"strconv"
@@ -87,6 +89,37 @@ var generateCmd = &cobra.Command{
 }
 
 func rules(input []string, ncomment bool, selectFlag string) (message string, file string, short string, files []string, diffs []int, rulesErr error) {
+	commentID := "tbsp: "
+
+	type Config struct {
+		commentID string
+	}
+
+	info, infoErr := ioutil.ReadFile("./.tablespoon.json")
+	secondary, secErr := ioutil.ReadFile("./.tbsp.json")
+	if infoErr == nil {
+		var payload Config
+		infoErr = json.Unmarshal(info, &payload)
+		if infoErr != nil {
+			rulesErr = errors.New("Error T8: " + infoErr.Error())
+			return
+		}
+
+		commentID = payload.commentID
+	}
+
+	if secErr == nil {
+		var payload Config
+		secErr = json.Unmarshal(secondary, &payload)
+		if secErr != nil {
+			rulesErr = errors.New("Error T8: " + secErr.Error())
+			return
+		}
+
+		commentID = payload.commentID
+	}
+
+
 	var adds int
 	var dels int
 	rulesErr = nil
@@ -185,12 +218,13 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 
 		shortened, shortErr := userShort.Run()
 		if shortErr != nil {
-			pterm.Error.Println("Error T4:", shortErr)
+			rulesErr = errors.New("Error T4: " + shortErr.Error())
+			return
 		}
 
 		short = shortened
 	} else {
-		if len(strings.Split(string(wordDiffs), "tbsp: ")) < 2 {
+		if len(strings.Split(string(wordDiffs), commentID)) < 2 {
 			userShort := promptui.Prompt{
 				Label:   fmt.Sprintf("What was changed in %s?", file),
 				Default: in,
@@ -203,7 +237,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 
 			short = shortened
 		} else {
-			short = strings.Split(strings.Split(string(wordDiffs), "tbsp: ")[1], "\n")[0]
+			short = strings.Split(strings.Split(string(wordDiffs), commentID)[1], "\n")[0]
 		}
 	}
 	return

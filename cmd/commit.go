@@ -74,6 +74,14 @@ var commitCmd = &cobra.Command{
 			}
 		}
 
+		if unstaged {
+			_, resErr := exec.Command("git", "add", "*").Output()
+
+			if resErr != nil {
+				pterm.Error.Println("Error T1:", resErr)
+				return
+			}
+		}
 		commitOut, commitErr := exec.Command("git", "commit", "-m", fmt.Sprintf("%s%s", input, desc)).Output()
 
 		// if there is an error with our execution handle it here
