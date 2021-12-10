@@ -15,13 +15,14 @@ var commitCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		full, _ := cmd.Flags().GetBool("full")
 		ncomment, _ := cmd.Flags().GetBool("no-comment")
+		selectFlag, _ := cmd.Flags().GetString("select")
 		content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
 		if err != nil {
 			pterm.Error.Println("Error T0:", err)
 		}
 
 		out := strings.Fields(string(content))
-		message, file, short, files, diffs := rules(out, ncomment)
+		message, file, short, files, diffs := rules(out, ncomment, selectFlag)
 		input := fmt.Sprintf("%s(%s): %s", message, file, short)
 		desc := "\n\n" //tbsp: init desc var
 
@@ -61,4 +62,5 @@ func init() {
 
 	commitCmd.Flags().BoolP("full", "f", false, "full length commit")
 	commitCmd.Flags().BoolP("no-comment", "n", false, "prompt user for short description")
+	generateCmd.Flags().StringP("select", "s", "", "choose file to showcase in short commit message")
 }

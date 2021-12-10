@@ -18,13 +18,14 @@ var generateCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		full, _ := cmd.Flags().GetBool("full")
 		ncomment, _ := cmd.Flags().GetBool("no-comment")
+		selectFlag, _ := cmd.Flags().GetString("select")
 		content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
 		if err != nil {
 			pterm.Error.Println("Error T0:", err)
 		}
 
 		out := strings.Fields(string(content))
-		message, file, short, files, diffs := rules(out, ncomment)
+		message, file, short, files, diffs := rules(out, ncomment, selectFlag)
 
 		fmt.Printf("%s(%s): %s\n", message, file, short)
 
@@ -49,7 +50,7 @@ var generateCmd = &cobra.Command{
 	},
 }
 
-func rules(input []string, ncomment bool) (message string, file string, short string, files []string, diffs []int) {
+func rules(input []string, ncomment bool, selectFlag string) (message string, file string, short string, files []string, diffs []int) {
 	var adds int
 	var dels int
 
@@ -84,13 +85,26 @@ func rules(input []string, ncomment bool) (message string, file string, short st
 
 	selected := []string{""} // initializing value
 
-	for n := range diffs {
-		s, _ := strconv.Atoi(selected[0])
-		if n == 0 {
-			selected = []string{strconv.Itoa(diffs[n]), files[n]}
-		} else if diffs[n] > s {
-			selected = []string{strconv.Itoa(diffs[n]), files[n]}
+	//tbsp: add `--select` flag to choose file
+	if selectFlag == "" {
+		for n := range diffs {
+			s, _ := strconv.Atoi(selected[0])
+			if n == 0 {
+				selected = []string{strconv.Itoa(diffs[n]), files[n]}
+			} else if diffs[n] > s {
+				selected = []string{strconv.Itoa(diffs[n]), files[n]}
+			}
 		}
+	} else {
+		for n := range files {
+			if files[n] == selectFlag {
+				selected = []string{strconv.Itoa(diffs[n]), files[n]}
+			}
+		}
+	}
+
+	if len(selected) < 2 {
+		pterm.Error.Println("Error T6: File not found.")
 	}
 
 	prompt := promptui.Select{
@@ -159,4 +173,5 @@ func init() {
 
 	generateCmd.Flags().BoolP("full", "f", false, "full length commit")
 	generateCmd.Flags().BoolP("no-comment", "c", false, "prompt user for short description")
+	generateCmd.Flags().StringP("select", "s", "", "choose file to showcase in short commit message")
 }

@@ -83,8 +83,8 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - Prompt for framework to determine importance of files? (For whichever goes in the short summary)
 - when message is generated have a few to select from (similar to [thefuck](https://github.com/nvbn/thefuck))
 - aliases that are recommended: `tbl`, `tbs`, or `tbsp`
-- [ ] be able to select which file you wish to be showcased by using `-s` flag then the file name.
-- [ ] Will list all other changes in long description.
+- [x] be able to select which file you wish to be showcased by using `-s` flag then the file name.
+- [x] Will list all other changes in long description.
 - [ ] Allow for tablespoon.config.json file and allow for customization
 - [x] Allow for --no-comment flag to manually input short desc
 - [ ] Add --co-author flag to allow for multiple authors to commit
