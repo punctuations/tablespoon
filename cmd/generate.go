@@ -39,6 +39,7 @@ var generateCmd = &cobra.Command{
 
 		out := strings.Fields(string(content))
 		message, file, short, files, diffs, rulesErr := rules(out, ncomment, selectFlag)
+
 		//tbsp: allow for better error handling
 		if rulesErr != nil {
 			pterm.Error.Println(rulesErr)
