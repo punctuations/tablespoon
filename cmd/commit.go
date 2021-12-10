@@ -62,5 +62,5 @@ func init() {
 
 	commitCmd.Flags().BoolP("full", "f", false, "full length commit")
 	commitCmd.Flags().BoolP("no-comment", "n", false, "prompt user for short description")
-	generateCmd.Flags().StringP("select", "s", "", "choose file to showcase in short commit message")
+	commitCmd.Flags().StringP("select", "s", "", "choose file to showcase in short commit message")
 }
