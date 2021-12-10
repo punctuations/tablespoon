@@ -104,7 +104,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 			rulesErr = errors.New("Error T8: " + infoErr.Error())
 			return
 		}
-		fmt.Println(payload)
+		fmt.Println(payload.commentID)
 
 		if payload.commentID != "" {
 			fmt.Println(payload.commentID)
@@ -119,8 +119,8 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 			rulesErr = errors.New("Error T8: " + secErr.Error())
 			return
 		}
+		fmt.Println(payload.commentID)
 
-		fmt.Println(payload)
 		if payload.commentID != "" {
 			commentID = payload.commentID
 		}
