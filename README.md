@@ -80,9 +80,9 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - all semantic-ness of this are based off of [the gist by joshbuchea](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716).
 
 ## TODO
-- Prompt for framework to determine importance of files? (For whichever goes in the short summary)
-- when message is generated have a few to select from (similar to [thefuck](https://github.com/nvbn/thefuck))
-- aliases that are recommended: `tbl`, `tbs`, or `tbsp`
+- [x] Prompt for framework to determine importance of files? (For whichever goes in the short summary)
+- [x] when message is generated have a few to select from (similar to [thefuck](https://github.com/nvbn/thefuck))
+- [ ] create `tablespoon --alias` command to create an alias for tablespoon as `tbsp`
 - [x] be able to select which file you wish to be showcased by using `-s` flag then the file name.
 - [x] Will list all other changes in long description.
 - [ ] Allow for tablespoon.config.json file and allow for customization
