@@ -34,7 +34,11 @@ var commitCmd = &cobra.Command{
 		}
 
 		out := strings.Fields(string(content))
-		message, file, short, files, diffs := rules(out, ncomment, selectFlag)
+		message, file, short, files, diffs, rulesErr := rules(out, ncomment, selectFlag)
+		if rulesErr != nil {
+			pterm.Error.Println(rulesErr)
+			return
+		}
 		input := fmt.Sprintf("%s(%s): %s", message, file, short)
 		desc := "\n\n" //tbsp: init desc var
 

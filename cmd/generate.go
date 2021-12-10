@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/manifoldco/promptui"
 	"github.com/pterm/pterm"
@@ -37,7 +38,12 @@ var generateCmd = &cobra.Command{
 		}
 
 		out := strings.Fields(string(content))
-		message, file, short, files, diffs := rules(out, ncomment, selectFlag)
+		message, file, short, files, diffs, rulesErr := rules(out, ncomment, selectFlag)
+		//tbsp: allow for better error handling
+		if rulesErr != nil {
+			pterm.Error.Println(rulesErr)
+			return
+		}
 
 		fmt.Printf("%s(%s): %s\n", message, file, short)
 
@@ -75,13 +81,14 @@ var generateCmd = &cobra.Command{
 	},
 }
 
-func rules(input []string, ncomment bool, selectFlag string) (message string, file string, short string, files []string, diffs []int) {
+func rules(input []string, ncomment bool, selectFlag string) (message string, file string, short string, files []string, diffs []int, rulesErr error) {
 	var adds int
 	var dels int
+	rulesErr = nil
 
 	//tbsp: Add error handling if no changes
 	if len(input) <= 1 {
-		pterm.Error.Println("Error T0: No differences detected.")
+		rulesErr = errors.New("Error T0: No differences detected.")
 		return
 	}
 
@@ -130,7 +137,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 	}
 
 	if len(selected) < 2 {
-		pterm.Error.Println("Error T6: File not found.")
+		rulesErr = errors.New("Error T6: File not found.")
 		return
 	}
 
@@ -143,7 +150,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 	_, message, err := prompt.Run()
 
 	if err != nil {
-		pterm.Error.Println("Error T5:", err)
+		rulesErr = errors.New("Error T5: " + err.Error())
 		return
 	}
 
@@ -158,7 +165,8 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 
 	wordDiffs, diffErr := exec.Command("git", "diff", "--word-diff=porcelain", file).Output()
 	if diffErr != nil {
-		pterm.Error.Println("Error T3:", diffErr)
+		rulesErr = errors.New("Error T3: " + diffErr.Error())
+		return
 	}
 
 	var in string
