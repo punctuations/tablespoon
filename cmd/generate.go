@@ -55,7 +55,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 	var dels int
 
 	//tbsp: Add error handling if no changes
-	if len(input) <= 0 {
+	if len(input) <= 1 {
 		pterm.Error.Println("Error T0: No differences detected.")
 	}
 
