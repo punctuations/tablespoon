@@ -95,8 +95,8 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 		commentID string
 	}
 
-	info, infoErr := ioutil.ReadFile("./.tablespoon.json")
-	secondary, secErr := ioutil.ReadFile("./.tbsp.json")
+	info, infoErr := ioutil.ReadFile("./tablespoon.json")
+	secondary, secErr := ioutil.ReadFile("./tbsp.json")
 	if infoErr == nil {
 		var payload Config
 		infoErr = json.Unmarshal(info, &payload)
@@ -132,7 +132,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 
 	//tbsp: Add error handling if no changes
 	if len(input) <= 1 {
-		rulesErr = errors.New("Error T0: No differences detected.")
+		rulesErr = errors.New("error T0: no differences detected")
 		return
 	}
 
@@ -181,7 +181,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 	}
 
 	if len(selected) < 2 {
-		rulesErr = errors.New("Error T6: File not found.")
+		rulesErr = errors.New("error t6: file not found")
 		return
 	}
 
