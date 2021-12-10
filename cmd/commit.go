@@ -20,20 +20,24 @@ var commitCmd = &cobra.Command{
 		coauth, _ := cmd.Flags().GetString("co-author")
 
 		//tbsp: add optional `--unstaged` flag
-		var stage string
+		var inf []byte
+		var differentErr error
 		if unstaged {
-			stage = ""
+			content, err := exec.Command("git", "diff", "--numstat").Output()
+			inf = content
+			differentErr = err
 		} else {
-			stage = "--staged"
+			content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
+			inf = content
+			differentErr = err
 		}
 
-		content, err := exec.Command("git", "diff", stage, "--numstat").Output()
-		if err != nil {
-			pterm.Error.Println("Error T0:", err)
+		if differentErr != nil {
+			pterm.Error.Println("Error T0:", differentErr)
 			return
 		}
 
-		out := strings.Fields(string(content))
+		out := strings.Fields(string(inf))
 		message, file, short, files, diffs, rulesErr := rules(out, ncomment, selectFlag)
 		if rulesErr != nil {
 			pterm.Error.Println(rulesErr)
@@ -73,7 +77,7 @@ var commitCmd = &cobra.Command{
 		commitOut, commitErr := exec.Command("git", "commit", "-m", fmt.Sprintf("%s%s", input, desc)).Output()
 
 		// if there is an error with our execution handle it here
-		if err != nil {
+		if commitErr != nil {
 			pterm.Error.Println("Error T1:", commitErr)
 			return
 		}

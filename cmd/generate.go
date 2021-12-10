@@ -23,21 +23,25 @@ var generateCmd = &cobra.Command{
 		selectFlag, _ := cmd.Flags().GetString("select")
 		coauth, _ := cmd.Flags().GetString("co-author")
 
-		var stage string
+		var inf []byte
+		var differentErr error
 		if unstaged {
-			stage = ""
+			content, err := exec.Command("git", "diff", "--numstat").Output()
+			inf = content
+			differentErr = err
 		} else {
-			stage = "--staged"
+			content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
+			inf = content
+			differentErr = err
 		}
-		content, err := exec.Command("git", "diff", stage, "--numstat").Output()
 
 		//tbsp: exit if error
-		if err != nil {
-			pterm.Error.Println("Error T0:", err)
+		if differentErr != nil {
+			pterm.Error.Println("Error T0:", differentErr)
 			return
 		}
 
-		out := strings.Fields(string(content))
+		out := strings.Fields(string(inf))
 		message, file, short, files, diffs, rulesErr := rules(out, ncomment, selectFlag)
 
 		//tbsp: allow for better error handling
