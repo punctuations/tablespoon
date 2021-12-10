@@ -12,8 +12,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "tablespoon",
 	Short: "🥄 A generator for semantic git messages.",
-	Long: `This is a template CLI application, which can be used as a boilerplate for awesome CLI tools written in Go.
-This template prints the date or time to the terminal.`,
+	Long:  `Tablespoon is a generation tool used to generate semantic git messages based upon comments, helping to enforce best practices`,
 	Example: `tablespoon generate
 tablespoon commit`,
 	Version: "v0.5.8-beta", // <---VERSION---> Updating this version, will also create a new GitHub release.
