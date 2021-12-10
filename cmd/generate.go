@@ -105,7 +105,10 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 			return
 		}
 
-		commentID = payload.commentID
+		if payload.commentID != "" {
+			fmt.Println(payload.commentID)
+			commentID = payload.commentID
+		}
 	}
 
 	if secErr == nil {
@@ -116,9 +119,10 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 			return
 		}
 
-		commentID = payload.commentID
+		if payload.commentID != "" {
+			commentID = payload.commentID
+		}
 	}
-
 
 	var adds int
 	var dels int
