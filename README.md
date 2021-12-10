@@ -88,7 +88,7 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - [ ] Allow for tablespoon.config.json file and allow for customization
 - [x] Allow for --no-comment flag to manually input short desc
 - [x] Add --co-author flag to allow for multiple authors to commit
-
+- [ ] Find better method of parsing `tbsp:` comments to ensure dependability
 ## OPTIONS
 - [ ] [Javascript](https://github.com/njzydark/project-template-cli)
 - [x] [Go](https://github.com/pterm/cli-template)
