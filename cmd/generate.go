@@ -21,8 +21,11 @@ var generateCmd = &cobra.Command{
 		selectFlag, _ := cmd.Flags().GetString("select")
 		coauth, _ := cmd.Flags().GetString("co-author")
 		content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
+
+		//tbsp: exit if error
 		if err != nil {
 			pterm.Error.Println("Error T0:", err)
+			return
 		}
 
 		out := strings.Fields(string(content))
@@ -40,12 +43,15 @@ var generateCmd = &cobra.Command{
 
 			if usernameErr != nil {
 				pterm.Error.Println("Error T2:", usernameErr)
+				return
 			}
 			if emailErr != nil {
 				pterm.Error.Println("Error T2:", emailErr)
+				return
 			}
 
 			fmt.Printf("\nAuthored-by: %s <%s>\n", strings.Fields(string(username))[0], strings.Fields(string(email))[0])
+
 			//tbsp: allow for `--co-author` flag, syntax = <name>:<email@email.com>
 			if coauth != "" {
 				var addr string
@@ -68,6 +74,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 	//tbsp: Add error handling if no changes
 	if len(input) <= 1 {
 		pterm.Error.Println("Error T0: No differences detected.")
+		return
 	}
 
 	for i := range input {
@@ -116,6 +123,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 
 	if len(selected) < 2 {
 		pterm.Error.Println("Error T6: File not found.")
+		return
 	}
 
 	prompt := promptui.Select{
@@ -128,6 +136,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 
 	if err != nil {
 		pterm.Error.Println("Error T5:", err)
+		return
 	}
 
 	t := []string{""}
