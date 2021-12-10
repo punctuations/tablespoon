@@ -16,6 +16,7 @@ var commitCmd = &cobra.Command{
 		full, _ := cmd.Flags().GetBool("full")
 		ncomment, _ := cmd.Flags().GetBool("no-comment")
 		selectFlag, _ := cmd.Flags().GetString("select")
+		coauth, _ := cmd.Flags().GetString("co-author")
 		content, err := exec.Command("git", "diff", "--staged", "--numstat").Output()
 		if err != nil {
 			pterm.Error.Println("Error T0:", err)
@@ -41,6 +42,15 @@ var commitCmd = &cobra.Command{
 			}
 
 			desc = desc + fmt.Sprintf("\nAuthored-by: %s <%s>\n", strings.Fields(string(username))[0], strings.Fields(string(email))[0])
+			if coauth != "" {
+				var addr string
+				if len(strings.Split(coauth, ":")) > 1 {
+					addr = strings.Split(coauth, ":")[1]
+				} else {
+					addr = coauth + "@users.noreply.github.com"
+				}
+				desc = desc + fmt.Sprintf("\nCo-Authored-by: %s <%s>\n", strings.Split(coauth, ":")[0], addr)
+			}
 		}
 
 		commitOut, commitErr := exec.Command("git", "commit", "-m", fmt.Sprintf("%s%s", input, desc)).Output()
@@ -63,4 +73,5 @@ func init() {
 	commitCmd.Flags().BoolP("full", "f", false, "full length commit")
 	commitCmd.Flags().BoolP("no-comment", "n", false, "prompt user for short description")
 	commitCmd.Flags().StringP("select", "s", "", "choose file to showcase in short commit message")
+	commitCmd.Flags().StringP("co-author", "c", "", "add co-author to commit")
 }
