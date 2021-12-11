@@ -95,36 +95,50 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 		commentID string
 	}
 
+	// fix me -- nothing being printed from file??!?!?!
 	info, infoErr := ioutil.ReadFile("./tablespoon.json")
-	secondary, secErr := ioutil.ReadFile("./tbsp.json")
-	if infoErr == nil {
-		var payload Config
-		infoErr = json.Unmarshal(info, &payload)
-		if infoErr != nil {
-			rulesErr = errors.New("Error T8: " + infoErr.Error())
-			return
-		}
-		fmt.Println(payload.commentID)
-
-		if payload.commentID != "" {
-			fmt.Println(payload.commentID)
-			commentID = payload.commentID
-		}
+	if infoErr != nil {
+		rulesErr = errors.New("Error T8: " + infoErr.Error())
+		return
 	}
 
-	if secErr == nil {
-		var payload Config
-		secErr = json.Unmarshal(secondary, &payload)
-		if secErr != nil {
-			rulesErr = errors.New("Error T8: " + secErr.Error())
-			return
-		}
-		fmt.Println(payload.commentID)
-
-		if payload.commentID != "" {
-			commentID = payload.commentID
-		}
+	var payload Config
+	infoErr = json.Unmarshal(info, &payload)
+	if infoErr != nil {
+		rulesErr = errors.New("Error T8: " + infoErr.Error())
+		return
 	}
+	fmt.Println(payload.commentID)
+
+	//secondary, secErr := ioutil.ReadFile("./tbsp.json")
+	//if infoErr == nil {
+	//	var payload Config
+	//	infoErr = json.Unmarshal(info, &payload)
+	//	if infoErr != nil {
+	//		rulesErr = errors.New("Error T8: " + infoErr.Error())
+	//		return
+	//	}
+	//	fmt.Println(payload.commentID)
+	//
+	//	if payload.commentID != "" {
+	//		fmt.Println(payload.commentID)
+	//		commentID = payload.commentID
+	//	}
+	//}
+
+	//if secErr == nil {
+	//	var payload Config
+	//	secErr = json.Unmarshal(secondary, &payload)
+	//	if secErr != nil {
+	//		rulesErr = errors.New("Error T8: " + secErr.Error())
+	//		return
+	//	}
+	//	fmt.Println(payload.commentID)
+	//
+	//	if payload.commentID != "" {
+	//		commentID = payload.commentID
+	//	}
+	//}
 
 	var adds int
 	var dels int
