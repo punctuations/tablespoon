@@ -16,7 +16,7 @@ var configCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		type Config struct {
-			commentID string
+			CommentID string
 		}
 
 		// fix me -- nothing being printed from file??!?!?!
