@@ -96,49 +96,35 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 		CommentID string
 	}
 
-	info, infoErr := ioutil.ReadFile("tbsp.json")
-	if infoErr != nil {
-		rulesErr = errors.New("Error T8: " + infoErr.Error())
-		return
+	info, infoErr := ioutil.ReadFile("tablespoon.json")
+	secondary, secErr := ioutil.ReadFile("tbsp.json")
+	if infoErr == nil {
+		var payload Config
+		infoErr = json.Unmarshal(info, &payload)
+		if infoErr != nil {
+			rulesErr = errors.New("Error T8: " + infoErr.Error())
+			return
+		}
+		fmt.Println(payload.CommentID)
+
+		if payload.CommentID != "" {
+			commentID = payload.CommentID
+		}
 	}
 
-	var payload Config
-	infoErr = json.Unmarshal(info, &payload)
-	if infoErr != nil {
-		rulesErr = errors.New("Error T8: " + infoErr.Error())
-		return
+	if secErr == nil {
+		var payload Config
+		secErr = json.Unmarshal(secondary, &payload)
+		if secErr != nil {
+			rulesErr = errors.New("Error T8: " + secErr.Error())
+			return
+		}
+		fmt.Println(payload.CommentID)
+
+		if payload.CommentID != "" {
+			commentID = payload.CommentID
+		}
 	}
-	fmt.Println(payload.CommentID)
-
-	//secondary, secErr := ioutil.ReadFile("./tbsp.json")
-	//if infoErr == nil {
-	//	var payload Config
-	//	infoErr = json.Unmarshal(info, &payload)
-	//	if infoErr != nil {
-	//		rulesErr = errors.New("Error T8: " + infoErr.Error())
-	//		return
-	//	}
-	//	fmt.Println(payload.commentID)
-	//
-	//	if payload.commentID != "" {
-	//		fmt.Println(payload.commentID)
-	//		commentID = payload.commentID
-	//	}
-	//}
-
-	//if secErr == nil {
-	//	var payload Config
-	//	secErr = json.Unmarshal(secondary, &payload)
-	//	if secErr != nil {
-	//		rulesErr = errors.New("Error T8: " + secErr.Error())
-	//		return
-	//	}
-	//	fmt.Println(payload.commentID)
-	//
-	//	if payload.commentID != "" {
-	//		commentID = payload.commentID
-	//	}
-	//}
 
 	var adds int
 	var dels int
