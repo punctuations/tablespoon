@@ -93,11 +93,11 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 	commentID := "tbsp: "
 
 	type Config struct {
-		commentID string
+		CommentID string
 	}
 
 	// fix me -- nothing being printed from file??!?!?!
-	info, infoErr := ioutil.ReadFile("tablespoon.json")
+	info, infoErr := ioutil.ReadFile("tbsp.json")
 	if infoErr != nil {
 		rulesErr = errors.New("Error T8: " + infoErr.Error())
 		return
@@ -109,7 +109,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 		rulesErr = errors.New("Error T8: " + infoErr.Error())
 		return
 	}
-	fmt.Println(payload.commentID)
+	fmt.Println(payload.CommentID)
 
 	//secondary, secErr := ioutil.ReadFile("./tbsp.json")
 	//if infoErr == nil {
