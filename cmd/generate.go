@@ -96,7 +96,6 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 		CommentID string
 	}
 
-	// fix me -- nothing being printed from file??!?!?!
 	info, infoErr := ioutil.ReadFile("tbsp.json")
 	if infoErr != nil {
 		rulesErr = errors.New("Error T8: " + infoErr.Error())
