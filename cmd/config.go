@@ -34,7 +34,7 @@ var configCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Println(obj)
+		fmt.Println(obj.CommentID)
 
 		pterm.Success.Println("Command Successfully Executed")
 	},
