@@ -21,7 +21,7 @@ var configCmd = &cobra.Command{
 
 		// fix me -- nothing being printed from file??!?!?!
 		info, infoErr := ioutil.ReadFile("tablespoon.json")
-		fmt.Println(info)
+		fmt.Println(string(info))
 		if infoErr != nil {
 			pterm.Error.Println(errors.New("Error T8: " + infoErr.Error()))
 			return
