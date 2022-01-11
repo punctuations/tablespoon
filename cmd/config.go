@@ -27,14 +27,14 @@ var configCmd = &cobra.Command{
 			return
 		}
 
-		var payload Config
-		infoErr = json.Unmarshal(info, &payload)
+		var obj Config
+		infoErr = json.Unmarshal(info, &obj)
 		if infoErr != nil {
 			pterm.Error.Println(errors.New("Error T8: " + infoErr.Error()))
 			return
 		}
 
-		fmt.Println(payload.commentID)
+		fmt.Println(obj)
 
 		pterm.Success.Println("Command Successfully Executed")
 	},
