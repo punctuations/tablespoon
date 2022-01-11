@@ -74,6 +74,7 @@ var commitCmd = &cobra.Command{
 			}
 		}
 
+		//!#: balls
 		if unstaged {
 			_, resErr := exec.Command("git", "add", "*").Output()
 

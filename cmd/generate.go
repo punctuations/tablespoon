@@ -89,6 +89,7 @@ var generateCmd = &cobra.Command{
 }
 
 func rules(input []string, ncomment bool, selectFlag string) (message string, file string, short string, files []string, diffs []int, rulesErr error) {
+	rulesErr = nil
 	commentID := "tbsp: "
 
 	type Config struct {
@@ -96,7 +97,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 	}
 
 	// fix me -- nothing being printed from file??!?!?!
-	info, infoErr := ioutil.ReadFile("./tablespoon.json")
+	info, infoErr := ioutil.ReadFile("tablespoon.json")
 	if infoErr != nil {
 		rulesErr = errors.New("Error T8: " + infoErr.Error())
 		return
@@ -142,7 +143,6 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 
 	var adds int
 	var dels int
-	rulesErr = nil
 
 	//tbsp: Add error handling if no changes
 	if len(input) <= 1 {
