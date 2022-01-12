@@ -252,7 +252,13 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 			short = shortened
 		} else {
-			short = strings.Split(strings.Split(string(wdiff), commentID)[1], "\n")[0]
+			// #!: add better parsing method of new comments with the commentID
+			newLines := strings.Split(string(wdiff), "+")
+			for _, newEntry := range newLines {
+				if len(strings.Split(newEntry, commentID)) > 0 {
+					short = strings.Split(strings.Split(newEntry, commentID)[1], "\n")[0]
+				}
+			}
 		}
 	}
 	return
