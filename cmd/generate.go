@@ -105,7 +105,6 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 			rulesErr = errors.New("Error T8: " + infoErr.Error())
 			return
 		}
-		fmt.Println(payload.CommentID)
 
 		if payload.CommentID != "" {
 			commentID = payload.CommentID
@@ -119,7 +118,6 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 			rulesErr = errors.New("Error T8: " + secErr.Error())
 			return
 		}
-		fmt.Println(payload.CommentID)
 
 		if payload.CommentID != "" {
 			commentID = payload.CommentID
