@@ -85,7 +85,7 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - [ ] create `tablespoon --alias` command to create an alias for tablespoon as `tbsp`
 - [x] be able to select which file you wish to be showcased by using `-s` flag then the file name.
 - [x] Will list all other changes in long description.
-- [ ] Allow for tablespoon.config.json file and allow for customization
+- [x] Allow for tablespoon.config.json file and allow for customization
 - [x] Allow for --no-comment flag to manually input short desc
 - [x] Add --co-author flag to allow for multiple authors to commit
 - [ ] Find better method of parsing `tbsp:` comments to ensure dependability
