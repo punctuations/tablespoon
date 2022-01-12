@@ -254,7 +254,9 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		} else {
 			// #!: add better parsing method of new comments with the commentID
 			newLines := strings.Split(string(wdiff), "+")
+			println(newLines)
 			for _, newEntry := range newLines {
+				println(newEntry)
 				if len(strings.Split(newEntry, commentID)) > 0 {
 					short = strings.Split(strings.Split(newEntry, commentID)[1], "\n")[0]
 				}
