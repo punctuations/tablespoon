@@ -44,7 +44,7 @@ var generateCmd = &cobra.Command{
 		}
 
 		out := strings.Fields(string(inf))
-		message, file, short, files, diffs, rulesErr := rules(out, ncomment, selectFlag)
+		message, file, short, files, diffs, rulesErr := rules(out, unstaged, ncomment, selectFlag)
 
 		//tbsp: allow for better error handling
 		if rulesErr != nil {
@@ -88,7 +88,7 @@ var generateCmd = &cobra.Command{
 	},
 }
 
-func rules(input []string, ncomment bool, selectFlag string) (message string, file string, short string, files []string, diffs []int, rulesErr error) {
+func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (message string, file string, short string, files []string, diffs []int, rulesErr error) {
 	rulesErr = nil
 	commentID := "tbsp: "
 
@@ -206,10 +206,22 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 		file = fmt.Sprintf("%s/%s", t[0], t[1])
 	}
 
-	wordDiffs, diffErr := exec.Command("git", "diff", "--word-diff=porcelain", file).Output()
-	if diffErr != nil {
-		rulesErr = errors.New("Error T3: " + diffErr.Error())
-		return
+	var wdiff []byte
+
+	if unstaged {
+		wordDiffs, diffErr := exec.Command("git", "diff", "--word-diff=porcelain", file).Output()
+		if diffErr != nil {
+			rulesErr = errors.New("Error T3: " + diffErr.Error())
+			return
+		}
+		wdiff = wordDiffs
+	} else {
+		wordDiffs, diffErr := exec.Command("git", "diff", "--staged", "--word-diff=porcelain", file).Output()
+		if diffErr != nil {
+			rulesErr = errors.New("Error T3: " + diffErr.Error())
+			return
+		}
+		wdiff = wordDiffs
 	}
 
 	var in string
@@ -229,7 +241,9 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 
 		short = shortened
 	} else {
-		if len(strings.Split(string(wordDiffs), commentID)) < 2 {
+		//!#print out comment id to ensure it is correct
+		println("selected:", commentID)
+		if len(strings.Split(string(wdiff), commentID)) < 2 {
 			userShort := promptui.Prompt{
 				Label:   fmt.Sprintf("What was changed in %s?", file),
 				Default: in,
@@ -242,7 +256,7 @@ func rules(input []string, ncomment bool, selectFlag string) (message string, fi
 
 			short = shortened
 		} else {
-			short = strings.Split(strings.Split(string(wordDiffs), commentID)[1], "\n")[0]
+			short = strings.Split(strings.Split(string(wdiff), commentID)[1], "\n")[0]
 		}
 	}
 	return

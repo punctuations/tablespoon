@@ -38,7 +38,7 @@ var commitCmd = &cobra.Command{
 		}
 
 		out := strings.Fields(string(inf))
-		message, file, short, files, diffs, rulesErr := rules(out, ncomment, selectFlag)
+		message, file, short, files, diffs, rulesErr := rules(out, unstaged, ncomment, selectFlag)
 		if rulesErr != nil {
 			pterm.Error.Println(rulesErr)
 			return
