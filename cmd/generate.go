@@ -239,7 +239,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		short = shortened
 	} else {
-		if len(strings.Split(string(wdiff), commentID)) < 2 {
+		if len(strings.Split(string(wdiff), commentID)) < 1 {
 			userShort := promptui.Prompt{
 				Label:   fmt.Sprintf("What was changed in %s?", file),
 				Default: in,
