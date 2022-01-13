@@ -261,6 +261,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 				println(newEntry)
 				if len(strings.Split(newEntry, commentID)) > 0 {
 					// prints //!#balls not "//" or "balls" like it should. wrap in another split if all else fails???
+					println(strings.Split(strings.Split(newEntry, commentID)[0], "\n")[0])
 					short = strings.Split(strings.Split(newEntry, commentID)[0], "\n")[0]
 				}
 			}
