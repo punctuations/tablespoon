@@ -256,10 +256,12 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 			// #!: add better parsing method of new comments with the commentID
 			newLines := strings.Split(string(wdiff), "+")
 			println(newLines)
-			for _, newEntry := range newLines {
+			// might need to use this int for the indexing of splitting array
+			for i, newEntry := range newLines {
 				println(newEntry)
 				if len(strings.Split(newEntry, commentID)) > 0 {
-					short = strings.Split(strings.Split(newEntry, commentID)[0], "\n")[0]
+					// prints //!#balls not "//" or "balls" like it should. wrap in another split if all else fails???
+					short = strings.Split(strings.Split(newEntry, commentID)[i], "\n")[0]
 				}
 			}
 		}
