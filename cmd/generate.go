@@ -257,11 +257,11 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 			newLines := strings.Split(string(wdiff), "+")
 			println(newLines)
 			// might need to use this int for the indexing of splitting array
-			for i, newEntry := range newLines {
+			for _, newEntry := range newLines {
 				println(newEntry)
 				if len(strings.Split(newEntry, commentID)) > 0 {
 					// prints //!#balls not "//" or "balls" like it should. wrap in another split if all else fails???
-					short = strings.Split(strings.Split(newEntry, commentID)[i], "\n")[0]
+					short = strings.Split(strings.Split(newEntry, commentID)[0], "\n")[0]
 				}
 			}
 		}
