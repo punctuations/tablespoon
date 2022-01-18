@@ -260,7 +260,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 			for i, newEntry := range newLines {
 				println(newEntry)
 				print(len(strings.Split(newEntry, commentID)))
-				println(strings.Split(newEntry, commentID)[0])
+				println("test split", strings.Split(newEntry, commentID))
 				if len(strings.Split(newEntry, commentID)) > 0 {
 					// prints //!#balls not "//" or "balls" like it should. wrap in another split if all else fails???
 					println(strings.Split(strings.Split(string(newEntry[i]), commentID)[0], "\n")[0])
