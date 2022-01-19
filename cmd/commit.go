@@ -94,7 +94,7 @@ var commitCmd = &cobra.Command{
 		output := string(commitOut[:])
 
 		fmt.Println(output)
-		pterm.Success.Println("Command Successfully Executed")
+		pterm.Success.Println("✨ Command Successfully Executed")
 	},
 }
 

@@ -84,7 +84,7 @@ var generateCmd = &cobra.Command{
 				fmt.Printf("\nCo-Authored-by: %s <%s>\n", strings.Split(coauth, ":")[0], addr)
 			}
 		}
-		pterm.Success.Println("Command Successfully Executed")
+		pterm.Success.Println("✨ Command Successfully Executed")
 	},
 }
 
