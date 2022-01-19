@@ -254,10 +254,16 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		} else {
 			// #!: add better parsing method of new comments with the commentID
 			newLines := strings.Split(string(wdiff), "+")
+			println(newLines)
+			println("+--")
 			for _, newEntry := range newLines {
+				println(newEntry)
+				println("++-")
 				// if line has at least one `commentID`
-				if strings.Contains(newEntry, commentID) {
-					println(strings.Split(strings.Split(newEntry, commentID)[1], "\n")[0])
+				if len(strings.Split(newEntry, commentID)) > 1 {
+					println(strings.Split(newEntry, commentID)[0])
+					println("+++")
+					println(strings.Split(strings.Split(newEntry, commentID)[0], "\n")[0])
 
 					//split @ newline(split @ commentID then get second in array ["//", "{message}"][1])[0] ["{message}"]
 					short = strings.Split(strings.Split(newEntry, commentID)[1], "\n")[0]
