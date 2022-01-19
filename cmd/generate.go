@@ -257,7 +257,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 			for _, newEntry := range newLines {
 				// if line has at least one `commentID`
 				if len(strings.Split(newEntry, commentID)) > 0 {
-					println(strings.Split(newEntry, commentID)[1])
+					println(strings.Split(newEntry, commentID)[0])
 					println("-----")
 					println(strings.Split(strings.Split(newEntry, commentID)[1], "\n")[0])
 
