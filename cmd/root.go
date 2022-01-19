@@ -15,7 +15,7 @@ var rootCmd = &cobra.Command{
 	Long:  `Tablespoon is a generation tool used to generate semantic git messages based upon comments, helping to enforce best practices`,
 	Example: `tablespoon generate
 tablespoon commit`,
-	Version: "v1.0.7-beta", // <---VERSION---> Updating this version, will also create a new GitHub release.
+	Version: "v1.0.8", // <---VERSION---> Updating this version, will also create a new GitHub release.
 	// Uncomment the following lines if your bare application has an action associated with it:
 	// RunE: func(cmd *cobra.Command, args []string) error {
 	// 	// Your code here
