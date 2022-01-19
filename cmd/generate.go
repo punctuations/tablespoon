@@ -260,7 +260,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 				println(newEntry)
 				println("++-")
 				// if line has at least one `commentID`
-				if len(strings.Split(newEntry, commentID)) > 0 {
+				if strings.Contains(newEntry, commentID) {
 					println(strings.Split(newEntry, commentID)[0])
 					println("+++")
 					println(strings.Split(strings.Split(newEntry, commentID)[0], "\n")[0])
