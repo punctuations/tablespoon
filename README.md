@@ -90,3 +90,4 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - [x] Find better method of parsing `tbsp:` comments to ensure dependability
 - [ ] Add more customization to config file
 - [ ] Add fig autocomplete command to allow for autocompletions with tablespoon
+- [ ] Add contributing.md file
