@@ -1,6 +1,5 @@
 <h1 align="center">🥄 Tablespoon</h1>
-<h5 align="center">EXPERIMENTAL PREVIEW</h5> 
-<p align="center">A simple generator for semantic git messages.</p>
+<p align="center">A cli tool to generate semantic commit messages.</p>
 
 <p align="center">
 
@@ -48,7 +47,7 @@
 
 <br/>
 
-Tablespoon is a simple generator which can generate semantic git commit messages of not only the highlights of the change, but everything.
+Tablespoon is a simple cli tool that can generate semantic commit messages based on comments in order to enforce best practices!
 
 ## Installation
 
@@ -91,8 +90,3 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - [x] Find better method of parsing `tbsp:` comments to ensure dependability
 - [ ] Add more customization to config file
 - [ ] Add fig autocomplete command to allow for autocompletions with tablespoon
-
-## OPTIONS
-- [ ] [Javascript](https://github.com/njzydark/project-template-cli)
-- [x] [Go](https://github.com/pterm/cli-template)
-- [ ] [Rust](https://github.com/rust-cli/cli-template)
