@@ -254,12 +254,14 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		} else {
 			// #!: add better parsing method of new comments with the commentID
 			newLines := strings.Split(string(wdiff), "+")
-			// might need to use this int for the indexing of splitting array
 			for _, newEntry := range newLines {
+				// if line has at least one `commentID`
 				if len(strings.Split(newEntry, commentID)) > 0 {
-					// prints //!#balls not "//" or "balls" like it should. wrap in another split if all else fails???
+					println(strings.Split(newEntry, commentID)[1])
+					println("-----")
 					println(strings.Split(strings.Split(newEntry, commentID)[1], "\n")[0])
 
+					//split @ newline(split @ commentID then get second in array ["//", "{message}"][1])[0] ["{message}"]
 					short = strings.Split(strings.Split(newEntry, commentID)[1], "\n")[0]
 				}
 			}
