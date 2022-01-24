@@ -92,3 +92,4 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - [ ] Add fig autocomplete command to allow for autocompletions with tablespoon
 - [ ] Add contributing.md file
 - [ ] Allow installation from homebrew / overhaul installation process
+- [ ] Commission a logo
