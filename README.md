@@ -93,3 +93,4 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - [ ] Add contributing.md file
 - [ ] Allow installation from homebrew / overhaul installation process
 - [ ] Commission a logo
+- [ ] IDE Extension port?
