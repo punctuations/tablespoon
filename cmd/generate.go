@@ -91,7 +91,8 @@ var generateCmd = &cobra.Command{
 func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (message string, file string, short string, files []string, diffs []int, rulesErr error) {
 	rulesErr = nil
 	commentID := "tbsp: "
-	types := []string{"feat", "fix", "docs", "style", "refactor",
+	var types []string
+	types = []string{"feat", "fix", "docs", "style", "refactor",
 		"test", "chore"}
 
 	type ExtendOptions struct {
