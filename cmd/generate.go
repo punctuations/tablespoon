@@ -91,9 +91,16 @@ var generateCmd = &cobra.Command{
 func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (message string, file string, short string, files []string, diffs []int, rulesErr error) {
 	rulesErr = nil
 	commentID := "tbsp: "
+	types := []string{"feat", "fix", "docs", "style", "refactor",
+		"test", "chore"}
+
+	type ExtendOptions struct {
+		types []string
+	}
 
 	type Config struct {
 		CommentID string
+		Extend    ExtendOptions
 	}
 
 	info, infoErr := ioutil.ReadFile("tablespoon.json")
@@ -121,6 +128,11 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		if payload.CommentID != "" {
 			commentID = payload.CommentID
+		}
+
+		// add error handling here
+		if payload.Extend.types[0] != "" {
+			types = append(types, payload.Extend.types...)
 		}
 	}
 
@@ -184,8 +196,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 	prompt := promptui.Select{
 		Label: fmt.Sprintf("Select type for %s", selected[1]),
-		Items: []string{"feat", "fix", "docs", "style", "refactor",
-			"test", "chore"},
+		Items: types,
 	}
 
 	_, message, err := prompt.Run()
