@@ -131,8 +131,10 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		}
 
 		// add error handling here
-		if payload.Extend.types[0] != "" {
-			types = append(types, payload.Extend.types...)
+		if len(payload.Extend.types) > 1 {
+			if payload.Extend.types[0] != "" {
+				types = append(types, payload.Extend.types...)
+			}
 		}
 	}
 
