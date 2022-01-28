@@ -96,12 +96,12 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		"test", "chore"}
 
 	type ExtendOptions struct {
-		types []string
+		Types []string `json:"types"`
 	}
 
 	type Config struct {
-		CommentID string
-		Extend    ExtendOptions
+		CommentID string        `json:"commentID"`
+		Extend    ExtendOptions `json:"extend"`
 	}
 
 	info, infoErr := ioutil.ReadFile("tablespoon.json")
@@ -116,6 +116,15 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		if payload.CommentID != "" {
 			commentID = payload.CommentID
+		}
+
+		// add error handling here
+		fmt.Println(len(payload.Extend.Types))
+		if len(payload.Extend.Types) > 1 {
+			fmt.Println("types have been extended")
+			if payload.Extend.Types[0] != "" {
+				types = append(types, payload.Extend.Types...)
+			}
 		}
 	}
 
@@ -132,11 +141,11 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		}
 
 		// add error handling here
-		fmt.Println(len(payload.Extend.types))
-		if len(payload.Extend.types) > 1 {
+		fmt.Println(len(payload.Extend.Types))
+		if len(payload.Extend.Types) > 1 {
 			fmt.Println("types have been extended")
-			if payload.Extend.types[0] != "" {
-				types = append(types, payload.Extend.types...)
+			if payload.Extend.Types[0] != "" {
+				types = append(types, payload.Extend.Types...)
 			}
 		}
 	}
@@ -257,6 +266,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		short = shortened
 	} else {
+		// fix this if statement to be updated with new method
 		if len(strings.Split(string(wdiff), commentID)) < 1 {
 			userShort := promptui.Prompt{
 				Label:   fmt.Sprintf("What was changed in %s?", file),
