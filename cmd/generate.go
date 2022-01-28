@@ -133,6 +133,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		// add error handling here
 		if len(payload.Extend.types) > 1 {
+			fmt.Println("types have been extended")
 			if payload.Extend.types[0] != "" {
 				types = append(types, payload.Extend.types...)
 			}
@@ -177,11 +178,13 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	//tbsp: add `--select` flag to choose file
 	if selectFlag == "" {
 		for n := range diffs {
-			s, _ := strconv.Atoi(selected[0])
-			if n == 0 {
-				selected = []string{strconv.Itoa(diffs[n]), files[n]}
-			} else if diffs[n] > s {
-				selected = []string{strconv.Itoa(diffs[n]), files[n]}
+			if files[n] != "tbsp.json" && files[n] != "tablespoon.json" {
+				s, _ := strconv.Atoi(selected[0])
+				if n == 0 {
+					selected = []string{strconv.Itoa(diffs[n]), files[n]}
+				} else if diffs[n] > s {
+					selected = []string{strconv.Itoa(diffs[n]), files[n]}
+				}
 			}
 		}
 	} else {
@@ -193,7 +196,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	}
 
 	if len(selected) < 2 {
-		rulesErr = errors.New("error t6: file not found")
+		rulesErr = errors.New("error T6: file not found")
 		return
 	}
 
