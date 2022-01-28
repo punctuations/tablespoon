@@ -132,6 +132,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		}
 
 		// add error handling here
+		fmt.Println(len(payload.Extend.types))
 		if len(payload.Extend.types) > 1 {
 			fmt.Println("types have been extended")
 			if payload.Extend.types[0] != "" {
