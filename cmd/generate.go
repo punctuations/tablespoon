@@ -120,7 +120,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		// add error handling here
 		fmt.Println(len(payload.Extend.Types))
-		if len(payload.Extend.Types) > 1 {
+		if len(payload.Extend.Types) >= 1 {
 			fmt.Println("types have been extended")
 			if payload.Extend.Types[0] != "" {
 				types = append(types, payload.Extend.Types...)
@@ -142,7 +142,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		// add error handling here
 		fmt.Println(len(payload.Extend.Types))
-		if len(payload.Extend.Types) > 1 {
+		if len(payload.Extend.Types) >= 1 {
 			fmt.Println("types have been extended")
 			if payload.Extend.Types[0] != "" {
 				types = append(types, payload.Extend.Types...)
