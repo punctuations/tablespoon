@@ -74,7 +74,6 @@ var commitCmd = &cobra.Command{
 			}
 		}
 
-		//!#: balls
 		if unstaged {
 			_, resErr := exec.Command("git", "add", "*").Output()
 
@@ -83,18 +82,24 @@ var commitCmd = &cobra.Command{
 				return
 			}
 		}
-		commitOut, commitErr := exec.Command("git", "commit", "-m", fmt.Sprintf("%s%s", input, desc)).Output()
 
-		// if there is an error with our execution handle it here
-		if commitErr != nil {
-			pterm.Error.Println("Error T1:", commitErr)
-			return
+		//#!: don't commit if a field is missing
+		if input != "" || desc != "" {
+			commitOut, commitErr := exec.Command("git", "commit", "-m", fmt.Sprintf("%s%s", input, desc)).Output()
+
+			// if there is an error with our execution handle it here
+			if commitErr != nil {
+				pterm.Error.Println("Error T1:", commitErr)
+				return
+			}
+
+			output := string(commitOut[:])
+
+			fmt.Println(output)
+			pterm.Success.Println("✨ Command Successfully Executed")
+		} else {
+			pterm.Error.Println("Empty fields in commit message")
 		}
-
-		output := string(commitOut[:])
-
-		fmt.Println(output)
-		pterm.Success.Println("✨ Command Successfully Executed")
 	},
 }
 

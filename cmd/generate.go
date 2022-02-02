@@ -52,39 +52,44 @@ var generateCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Printf("%s(%s): %s\n", message, file, short)
+		if message != "" || file != "" || short != "" {
+			fmt.Printf("%s(%s): %s\n", message, file, short)
 
-		if full {
-			fmt.Printf("\n\n")
-			for f := range files {
-				fmt.Println("-", files[f], "-", diffs[f], "changes")
-			}
-			username, usernameErr := exec.Command("git", "config", "user.name").Output()
-			email, emailErr := exec.Command("git", "config", "user.email").Output()
-
-			if usernameErr != nil {
-				pterm.Error.Println("Error T2:", usernameErr)
-				return
-			}
-			if emailErr != nil {
-				pterm.Error.Println("Error T2:", emailErr)
-				return
-			}
-
-			fmt.Printf("\nAuthored-by: %s <%s>\n", strings.Fields(string(username))[0], strings.Fields(string(email))[0])
-
-			//tbsp: allow for `--co-author` flag, syntax = <name>:<email@email.com>
-			if coauth != "" {
-				var addr string
-				if len(strings.Split(coauth, ":")) > 1 {
-					addr = strings.Split(coauth, ":")[1]
-				} else {
-					addr = coauth + "@users.noreply.github.com"
+			if full {
+				fmt.Printf("\n\n")
+				for f := range files {
+					fmt.Println("-", files[f], "-", diffs[f], "changes")
 				}
-				fmt.Printf("\nCo-Authored-by: %s <%s>\n", strings.Split(coauth, ":")[0], addr)
+				username, usernameErr := exec.Command("git", "config", "user.name").Output()
+				email, emailErr := exec.Command("git", "config", "user.email").Output()
+
+				if usernameErr != nil {
+					pterm.Error.Println("Error T2:", usernameErr)
+					return
+				}
+				if emailErr != nil {
+					pterm.Error.Println("Error T2:", emailErr)
+					return
+				}
+
+				fmt.Printf("\nAuthored-by: %s <%s>\n", strings.Fields(string(username))[0], strings.Fields(string(email))[0])
+
+				//tbsp: allow for `--co-author` flag, syntax = <name>:<email@email.com>
+				if coauth != "" {
+					var addr string
+					if len(strings.Split(coauth, ":")) > 1 {
+						addr = strings.Split(coauth, ":")[1]
+					} else {
+						addr = coauth + "@users.noreply.github.com"
+					}
+					fmt.Printf("\nCo-Authored-by: %s <%s>\n", strings.Split(coauth, ":")[0], addr)
+				}
 			}
+			pterm.Success.Println("✨ Command Successfully Executed")
+		} else {
+			pterm.Error.Println("Empty fields in commit message")
 		}
-		pterm.Success.Println("✨ Command Successfully Executed")
+
 	},
 }
 
