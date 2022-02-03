@@ -39,7 +39,7 @@ var generateCmd = &cobra.Command{
 
 		//tbsp: exit if error
 		if differentErr != nil {
-			pterm.Error.Println("Error T0:", differentErr)
+			pterm.Error.Println("500: An error occurred when running git diff; ", differentErr.Error())
 			return
 		}
 
@@ -64,11 +64,11 @@ var generateCmd = &cobra.Command{
 				email, emailErr := exec.Command("git", "config", "user.email").Output()
 
 				if usernameErr != nil {
-					pterm.Error.Println("Error T2:", usernameErr)
+					pterm.Error.Println("500: An error occurred while accessing global git config username; " + usernameErr.Error())
 					return
 				}
 				if emailErr != nil {
-					pterm.Error.Println("Error T2:", emailErr)
+					pterm.Error.Println("500: An error occurred while accessing global git config email; ", emailErr.Error())
 					return
 				}
 
@@ -87,7 +87,7 @@ var generateCmd = &cobra.Command{
 			}
 			pterm.Success.Println("✨ Command Successfully Executed")
 		} else {
-			pterm.Error.Println("Empty fields in commit message")
+			pterm.Error.Println("☕️ Empty fields in commit message")
 		}
 
 	},
@@ -115,7 +115,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		var payload Config
 		infoErr = json.Unmarshal(info, &payload)
 		if infoErr != nil {
-			rulesErr = errors.New("Error T8: " + infoErr.Error())
+			rulesErr = errors.New("500: Error while unmarshalling json config file; " + infoErr.Error())
 			return
 		}
 
@@ -132,7 +132,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		var payload Config
 		secErr = json.Unmarshal(secondary, &payload)
 		if secErr != nil {
-			rulesErr = errors.New("Error T8: " + secErr.Error())
+			rulesErr = errors.New("500: Error while unmarshalling json config file; " + secErr.Error())
 			return
 		}
 
@@ -150,7 +150,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 	//tbsp: Add error handling if no changes
 	if len(input) <= 1 {
-		rulesErr = errors.New("error T0: no differences detected")
+		rulesErr = errors.New("404: No differences found")
 		return
 	}
 
@@ -201,7 +201,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	}
 
 	if len(selected) < 2 {
-		rulesErr = errors.New("error T6: file not found")
+		rulesErr = errors.New("404: File not found")
 		return
 	}
 
@@ -213,7 +213,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	_, message, err := prompt.Run()
 
 	if err != nil {
-		rulesErr = errors.New("Error T5: " + err.Error())
+		rulesErr = errors.New("500: An error occurred while attempting to prompt the user; " + err.Error())
 		return
 	}
 
@@ -231,14 +231,14 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	if unstaged {
 		wordDiffs, diffErr := exec.Command("git", "diff", "--word-diff=porcelain", file).Output()
 		if diffErr != nil {
-			rulesErr = errors.New("Error T3: " + diffErr.Error())
+			rulesErr = errors.New("500: An error occurred when running git diff; " + diffErr.Error())
 			return
 		}
 		wdiff = wordDiffs
 	} else {
 		wordDiffs, diffErr := exec.Command("git", "diff", "--staged", "--word-diff=porcelain", file).Output()
 		if diffErr != nil {
-			rulesErr = errors.New("Error T3: " + diffErr.Error())
+			rulesErr = errors.New("500: An error occurred when running git diff; " + diffErr.Error())
 			return
 		}
 		wdiff = wordDiffs
@@ -255,7 +255,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		shortened, shortErr := userShort.Run()
 		if shortErr != nil {
-			rulesErr = errors.New("Error T4: " + shortErr.Error())
+			rulesErr = errors.New("500: An error occurred while attempting to prompt the user; " + shortErr.Error())
 			return
 		}
 
@@ -270,7 +270,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 			shortened, shortErr := userShort.Run()
 			if shortErr != nil {
-				pterm.Error.Println("Error T4:", shortErr)
+				rulesErr = errors.New("500: An error occurred while attempting to prompt the user; " + shortErr.Error())
 			}
 
 			short = shortened

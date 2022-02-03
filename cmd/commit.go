@@ -33,7 +33,7 @@ var commitCmd = &cobra.Command{
 		}
 
 		if differentErr != nil {
-			pterm.Error.Println("Error T0:", differentErr)
+			pterm.Error.Println("500: An error occurred when running git diff; ", differentErr.Error())
 			return
 		}
 
@@ -54,11 +54,11 @@ var commitCmd = &cobra.Command{
 			email, emailErr := exec.Command("git", "config", "user.email").Output()
 
 			if usernameErr != nil {
-				pterm.Error.Println("Error T2:", usernameErr)
+				pterm.Error.Println("500: An error occurred while accessing global git config username; ", usernameErr.Error())
 				return
 			}
 			if emailErr != nil {
-				pterm.Error.Println("Error T2:", emailErr)
+				pterm.Error.Println("500: An error occurred while accessing global git config email; ", emailErr.Error())
 				return
 			}
 
@@ -78,7 +78,7 @@ var commitCmd = &cobra.Command{
 			_, resErr := exec.Command("git", "add", "*").Output()
 
 			if resErr != nil {
-				pterm.Error.Println("Error T1:", resErr)
+				pterm.Error.Println("500: An error occurred when running git add; ", resErr.Error())
 				return
 			}
 		}
@@ -89,7 +89,7 @@ var commitCmd = &cobra.Command{
 
 			// if there is an error with our execution handle it here
 			if commitErr != nil {
-				pterm.Error.Println("Error T1:", commitErr)
+				pterm.Error.Println("500: An error occurred when running git commit; ", commitErr.Error())
 				return
 			}
 
@@ -98,7 +98,7 @@ var commitCmd = &cobra.Command{
 			fmt.Println(output)
 			pterm.Success.Println("✨ Command Successfully Executed")
 		} else {
-			pterm.Error.Println("Empty fields in commit message")
+			pterm.Error.Println("☕️ Empty fields in commit message")
 		}
 	},
 }
