@@ -40,14 +40,15 @@ var configCmd = &cobra.Command{
 			info, infoErr := ioutil.ReadFile("tbsp.json")
 			fmt.Println(string(info))
 			if infoErr != nil {
-				pterm.Error.Println(errors.New("Error T8: " + infoErr.Error()))
+				// !#: add verbose errors to config cmd
+				pterm.Error.Println(errors.New("404: File not found;  " + infoErr.Error()))
 				return
 			}
 
 			var obj Config
 			infoErr = json.Unmarshal(info, &obj)
 			if infoErr != nil {
-				pterm.Error.Println(errors.New("Error T8: " + infoErr.Error()))
+				pterm.Error.Println(errors.New("404: File not found; " + infoErr.Error()))
 				return
 			}
 		}

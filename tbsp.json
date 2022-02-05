@@ -1,4 +1,6 @@
 {
   "commentID": "!#: ",
-  "extend": {}
+  "extend": {
+    "types": ["balls"]
+  }
 }
