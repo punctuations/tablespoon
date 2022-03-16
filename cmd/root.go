@@ -51,7 +51,7 @@ func init() {
 	// Fill the empty strings with the shorthand variant (if you like to have one).
 	rootCmd.PersistentFlags().BoolVarP(&pterm.PrintDebugMessages, "debug", "", false, "enable debug messages")
 	rootCmd.PersistentFlags().BoolVarP(&pterm.RawOutput, "raw", "", false, "print unstyled raw output (set it if output is written to a file)")
-	rootCmd.PersistentFlags().BoolVarP(&pcli.DisableUpdateChecking, "disable-update-checks", "", true, "disables update checks")
+	rootCmd.PersistentFlags().BoolVarP(&pcli.DisableUpdateChecking, "disable-update-checks", "", false, "disables update checks")
 
 	// Use https://github.com/pterm/pcli to style the output of cobra.
 	pcli.SetRepo("punctuations/tablespoon")
