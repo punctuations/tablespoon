@@ -2,14 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
-	"os/exec"
+	"os"
 	"strings"
 )
 
-// alias represents the config command
-var alias = &cobra.Command{
+// aliasCmd represents the alias command
+var aliasCmd = &cobra.Command{
 	Use:   "alias",
 	Short: "creates an alias for tablespoon.",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -18,13 +17,9 @@ var alias = &cobra.Command{
 			shorthand = "tbsp"
 		}
 
-		shellCmd, shellErr := exec.Command("echo $SHELL").Output()
-		if shellErr != nil {
-			pterm.Error.Println("500: Unable to identify shell; ", shellErr)
-			return
-		}
+		shellPath := os.Getenv("SHELL")
 
-		shell := strings.Split(string(shellCmd), "/")[len(strings.Split(string(shellCmd), "/"))-1]
+		shell := strings.Split(shellPath, "/")[len(strings.Split(shellPath, "/"))-1]
 
 		if shell == "bash" || shell == "sh" {
 			fmt.Printf("function %s () {{\n  $TBSP_CMD=$(\n    echo tablespoon $@\n  ) && eval $TBSP_CMD\n}}", shorthand)
@@ -43,7 +38,7 @@ var alias = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(alias)
+	rootCmd.AddCommand(aliasCmd)
 
-	alias.Flags().StringP("shorthand", "s", "", "add a shorthand for the tablespoon command")
+	aliasCmd.Flags().StringP("shorthand", "s", "", "add a shorthand for the tablespoon command")
 }
