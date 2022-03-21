@@ -1,6 +1,6 @@
 {
   "commentID": "!#: ",
   "extend": {
-    "types": ["balls"]
+    "types": ["cleanup"]
   }
 }
