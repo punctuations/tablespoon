@@ -335,7 +335,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 			return
 		}
 
-		if err := f.Truncate(0); err != nil {
+		if err := os.Truncate(file, 0); err != nil {
 			f.Close()
 			rulesErr = errors.New("500: An error occurred while trying to truncate the file; " + err.Error())
 			return
