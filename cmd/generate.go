@@ -8,6 +8,7 @@ import (
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"io/ioutil"
+	"os"
 	"os/exec"
 	"regexp"
 	"strconv"
@@ -99,6 +100,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	var types []string
 	types = []string{"feat", "fix", "docs", "style", "refactor",
 		"test", "chore"}
+	cleanup := false
 
 	type ExtendOptions struct {
 		Types []string `json:"types"`
@@ -107,6 +109,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	type Config struct {
 		CommentID string        `json:"commentID"`
 		Extend    ExtendOptions `json:"extend"`
+		Cleanup   bool          `json:"cleanup"`
 	}
 
 	info, infoErr := ioutil.ReadFile("tablespoon.json")
@@ -126,6 +129,10 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		if len(payload.Extend.Types) >= 1 && payload.Extend.Types[0] != "" {
 			types = append(types, payload.Extend.Types...)
 		}
+
+		if payload.Cleanup {
+			cleanup = payload.Cleanup
+		}
 	}
 
 	if secErr == nil {
@@ -142,6 +149,10 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		if len(payload.Extend.Types) >= 1 && payload.Extend.Types[0] != "" {
 			types = append(types, payload.Extend.Types...)
+		}
+
+		if payload.Cleanup {
+			cleanup = payload.Cleanup
 		}
 	}
 
@@ -229,16 +240,16 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	var wdiff []byte
 
 	if unstaged {
-		wordDiffs, diffErr := exec.Command("git", "diff", "--word-diff=porcelain", file).Output()
-		if diffErr != nil {
-			rulesErr = errors.New("500: An error occurred when running git diff; " + diffErr.Error())
+		wordDiffs, err := exec.Command("git", "diff", "--word-diff=porcelain", file).Output()
+		if err != nil {
+			rulesErr = errors.New("500: An error occurred when running git diff; " + err.Error())
 			return
 		}
 		wdiff = wordDiffs
 	} else {
-		wordDiffs, diffErr := exec.Command("git", "diff", "--staged", "--word-diff=porcelain", file).Output()
-		if diffErr != nil {
-			rulesErr = errors.New("500: An error occurred when running git diff; " + diffErr.Error())
+		wordDiffs, err := exec.Command("git", "diff", "--staged", "--word-diff=porcelain", file).Output()
+		if err != nil {
+			rulesErr = errors.New("500: An error occurred when running git diff; " + err.Error())
 			return
 		}
 		wdiff = wordDiffs
@@ -253,9 +264,9 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 			Default: in,
 		}
 
-		shortened, shortErr := userShort.Run()
-		if shortErr != nil {
-			rulesErr = errors.New("500: An error occurred while attempting to prompt the user; " + shortErr.Error())
+		shortened, err := userShort.Run()
+		if err != nil {
+			rulesErr = errors.New("500: An error occurred while attempting to prompt the user; " + err.Error())
 			return
 		}
 
@@ -268,9 +279,9 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 				Default: in,
 			}
 
-			shortened, shortErr := userShort.Run()
-			if shortErr != nil {
-				rulesErr = errors.New("500: An error occurred while attempting to prompt the user; " + shortErr.Error())
+			shortened, err := userShort.Run()
+			if err != nil {
+				rulesErr = errors.New("500: An error occurred while attempting to prompt the user; " + err.Error())
 			}
 
 			short = shortened
@@ -284,6 +295,43 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 					short = strings.Split(strings.Split(newEntry, commentID)[1], "\n")[0]
 				}
 			}
+		}
+	}
+
+	if cleanup {
+		fi, err := os.Lstat(file)
+		if err != nil {
+			rulesErr = errors.New("500: An error occurred while trying to read the file's permissions; " + err.Error())
+			return
+		}
+
+		content, contentErr := ioutil.ReadFile(file)
+		if contentErr != nil {
+			rulesErr = errors.New("500: An error occurred while trying to read the file; " + contentErr.Error())
+			return
+		}
+
+		t := strings.ReplaceAll(string(content), commentID+short, short)
+
+		f, openErr := os.OpenFile(file, os.O_APPEND, fi.Mode().Perm())
+		if err != nil {
+			rulesErr = errors.New("500: An error occurred while trying to open the file; " + openErr.Error())
+		}
+
+		err = f.Truncate(0)
+		if err != nil {
+			rulesErr = errors.New("500: An error occurred while trying to truncate the file; " + err.Error())
+			return
+		}
+
+		if _, err := f.Write([]byte(t)); err != nil {
+			f.Close()
+			rulesErr = errors.New("500: An error occurred while trying to write to the file; " + err.Error())
+			return
+		}
+		if err := f.Close(); err != nil {
+			rulesErr = errors.New("500: An error occurred while trying to write to the file; " + err.Error())
+			return
 		}
 	}
 	return
