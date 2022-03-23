@@ -313,12 +313,6 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	}
 
 	if cleanup {
-		fi, err := os.Lstat(file)
-		if err != nil {
-			rulesErr = errors.New("500: An error occurred while trying to read the file's permissions; " + err.Error())
-			return
-		}
-
 		content, contentErr := ioutil.ReadFile(file)
 		if contentErr != nil {
 			rulesErr = errors.New("500: An error occurred while trying to read the file; " + contentErr.Error())
@@ -327,7 +321,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		t := strings.ReplaceAll(string(content), commentID+short, short)
 
-		f, openErr := os.OpenFile(file, os.O_APPEND, fi.Mode().Perm())
+		f, openErr := os.OpenFile(file, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 		//!#: return && close file on error
 		if openErr != nil {
 			f.Close()
