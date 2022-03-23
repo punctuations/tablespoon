@@ -3,5 +3,6 @@
   "extend": {
     "types": ["cleanup"]
   },
-  "cleanup": false
+  "cleanup": false,
+  "ignored": ["whiteboard.md"]
 }

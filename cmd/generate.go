@@ -101,6 +101,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	types = []string{"feat", "fix", "docs", "style", "refactor",
 		"test", "chore"}
 	cleanup := false
+	var ignored []string
 
 	type ExtendOptions struct {
 		Types []string `json:"types"`
@@ -110,6 +111,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		CommentID string        `json:"commentID"`
 		Extend    ExtendOptions `json:"extend"`
 		Cleanup   bool          `json:"cleanup"`
+		Ignored   []string      `json:"ignored"`
 	}
 
 	info, infoErr := ioutil.ReadFile("tablespoon.json")
@@ -133,6 +135,10 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		if payload.Cleanup {
 			cleanup = payload.Cleanup
 		}
+
+		if len(payload.Ignored) >= 1 && payload.Ignored[0] != "" {
+			ignored = append(ignored, payload.Ignored...)
+		}
 	}
 
 	if secErr == nil {
@@ -153,6 +159,10 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		if payload.Cleanup {
 			cleanup = payload.Cleanup
+		}
+
+		if len(payload.Ignored) >= 1 && payload.Ignored[0] != "" {
+			ignored = append(ignored, payload.Ignored...)
 		}
 	}
 
@@ -195,11 +205,15 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	if selectFlag == "" {
 		for n := range diffs {
 			if files[n] != "tbsp.json" && files[n] != "tablespoon.json" {
-				s, _ := strconv.Atoi(selected[0])
-				if n == 0 {
-					selected = []string{strconv.Itoa(diffs[n]), files[n]}
-				} else if diffs[n] > s {
-					selected = []string{strconv.Itoa(diffs[n]), files[n]}
+				for f := range ignored {
+					if files[n] != ignored[f] {
+						s, _ := strconv.Atoi(selected[0])
+						if n == 0 {
+							selected = []string{strconv.Itoa(diffs[n]), files[n]}
+						} else if diffs[n] > s {
+							selected = []string{strconv.Itoa(diffs[n]), files[n]}
+						}
+					}
 				}
 			}
 		}
@@ -313,6 +327,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		t := strings.ReplaceAll(string(content), commentID+short, short)
 
+		//#!: general cleanup
 		f, openErr := os.OpenFile(file, os.O_APPEND, fi.Mode().Perm())
 		if openErr != nil {
 			rulesErr = errors.New("500: An error occurred while trying to open the file; " + openErr.Error())
