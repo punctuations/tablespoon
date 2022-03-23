@@ -314,12 +314,11 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		t := strings.ReplaceAll(string(content), commentID+short, short)
 
 		f, openErr := os.OpenFile(file, os.O_APPEND, fi.Mode().Perm())
-		if err != nil {
+		if openErr != nil {
 			rulesErr = errors.New("500: An error occurred while trying to open the file; " + openErr.Error())
 		}
 
-		err = f.Truncate(0)
-		if err != nil {
+		if err := f.Truncate(0); err != nil {
 			rulesErr = errors.New("500: An error occurred while trying to truncate the file; " + err.Error())
 			return
 		}
