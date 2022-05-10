@@ -91,9 +91,9 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - [x] Add --co-author flag to allow for multiple authors to commit
 - [x] Find better method of parsing `tbsp:` comments to ensure dependability
 - [x] Add more customization to config file
-- [ ] Add fig autocomplete command to allow for autocompletions with tablespoon
-- [ ] Add contributing.md file
+- [ ] ~~Add fig autocomplete command to allow for autocompletions with tablespoon~~
+- [x] Add contributing.md file
 - [ ] ~~Allow installation from homebrew / overhaul installation process~~
-- [ ] Commission a logo
+- [ ] ~~Commission a logo~~
 - [ ] IDE Extension port?
-- [ ] redesign website
+- [ ] documentation on website
