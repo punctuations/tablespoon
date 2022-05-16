@@ -75,9 +75,9 @@ var commitCmd = &cobra.Command{
 			}
 		}
 
-		println(input)
+		println(input, desc)
 		prompt := promptui.Prompt{
-			Label:     "Is this correct?",
+			Label:     "Is this correct",
 			IsConfirm: true,
 		}
 
