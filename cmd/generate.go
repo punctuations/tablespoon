@@ -108,10 +108,11 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	}
 
 	type Config struct {
-		CommentID string        `json:"commentID"`
-		Extend    ExtendOptions `json:"extend"`
-		Cleanup   bool          `json:"cleanup"`
-		Ignored   []string      `json:"ignored"`
+		CommentID          string        `json:"commentID"`
+		Extend             ExtendOptions `json:"extend"`
+		Cleanup            bool          `json:"cleanup"`
+		Ignored            []string      `json:"ignored"`
+		ConfirmationPrompt bool          `json:"confirmationPrompt"`
 	}
 
 	info, infoErr := ioutil.ReadFile("tablespoon.json")

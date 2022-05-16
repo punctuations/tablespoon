@@ -1,10 +1,12 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/manifoldco/promptui"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
+	"io/ioutil"
 	"os/exec"
 	"strings"
 )
@@ -75,23 +77,63 @@ var commitCmd = &cobra.Command{
 			}
 		}
 
-		println(input, desc)
-		prompt := promptui.Prompt{
-			Label:     "Is this correct",
-			IsConfirm: true,
+		var confP bool
+
+		type Config struct {
+			ConfirmationPrompt bool `json:"confirmationPrompt"`
 		}
 
-		result, err := prompt.Run()
+		info, infoErr := ioutil.ReadFile("tablespoon.json")
+		secondary, secErr := ioutil.ReadFile("tbsp.json")
+		if infoErr == nil {
+			var payload Config
+			infoErr = json.Unmarshal(info, &payload)
+			if infoErr != nil {
+				pterm.Error.Println("500: Error while unmarshalling json config file; " + infoErr.Error())
+				return
+			}
 
-		//!#: exit command if not "y"
-		if err != nil {
-			pterm.Success.Println("Exited command")
-			return
+			if payload.ConfirmationPrompt {
+				confP = payload.ConfirmationPrompt
+			} else {
+				confP = true
+			}
 		}
 
-		if result == "n" {
-			pterm.Success.Println("Exited command")
-			return
+		if secErr == nil {
+			var payload Config
+			secErr = json.Unmarshal(secondary, &payload)
+			if secErr != nil {
+				pterm.Error.Println("500: Error while unmarshalling json config file; " + secErr.Error())
+				return
+			}
+
+			if payload.ConfirmationPrompt {
+				confP = payload.ConfirmationPrompt
+			} else {
+				confP = true
+			}
+		}
+
+		//!#: add confirmationPrompt config field
+		if confP || desc != "\n\n" {
+			println(input, desc)
+			prompt := promptui.Prompt{
+				Label:     "Is this correct",
+				IsConfirm: true,
+			}
+
+			result, err := prompt.Run()
+
+			if err != nil {
+				pterm.Success.Println("Exited command")
+				return
+			}
+
+			if result == "n" {
+				pterm.Success.Println("Exited command")
+				return
+			}
 		}
 
 		if unstaged {
