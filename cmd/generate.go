@@ -226,9 +226,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		}
 	}
 
-	for _, value := range selected {
-		fmt.Printf("%d\n", value)
-	}
+	fmt.Println(strings.Trim(fmt.Sprint(selected), "[]"))
 	if len(selected) < 2 {
 		rulesErr = errors.New("404: File not found")
 		return
