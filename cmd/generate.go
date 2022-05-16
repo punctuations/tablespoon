@@ -226,8 +226,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		}
 	}
 
-	println(selected[0])
-	if len(selected) < 1 {
+	if len(selected) < 2 {
 		rulesErr = errors.New("404: File not found")
 		return
 	}
