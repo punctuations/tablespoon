@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/manifoldco/promptui"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"os/exec"
@@ -72,6 +73,24 @@ var commitCmd = &cobra.Command{
 				}
 				desc = desc + fmt.Sprintf("\nCo-Authored-by: %s <%s>\n", strings.Split(coauth, ":")[0], addr)
 			}
+		}
+
+		println(input)
+		prompt := promptui.Prompt{
+			Label:     "Is this correct?",
+			IsConfirm: true,
+		}
+
+		result, err := prompt.Run()
+
+		if err != nil {
+			pterm.Error.Println("500: An error occurred while showing a prompt.")
+			return
+		}
+
+		if result == "n" {
+			pterm.Success.Println("Exited command")
+			return
 		}
 
 		if unstaged {
