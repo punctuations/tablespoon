@@ -4,5 +4,6 @@
     "types": ["cleanup"]
   },
   "cleanup": false,
+  "confirmationPrompt": true,
   "ignored": ["whiteboard.md"]
 }

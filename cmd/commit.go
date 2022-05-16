@@ -83,8 +83,9 @@ var commitCmd = &cobra.Command{
 
 		result, err := prompt.Run()
 
+		//!#: exit command if not "y"
 		if err != nil {
-			pterm.Error.Println("500: An error occurred while showing a prompt.")
+			pterm.Success.Println("Exited command")
 			return
 		}
 
@@ -103,7 +104,7 @@ var commitCmd = &cobra.Command{
 		}
 
 		//#!: don't commit if a field is missing
-		if input != "" || desc != "" {
+		if input != "" || desc != "\n\n" {
 			commitOut, commitErr := exec.Command("git", "commit", "-m", fmt.Sprintf("%s%s", input, desc)).Output()
 
 			// if there is an error with our execution handle it here
