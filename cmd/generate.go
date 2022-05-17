@@ -255,12 +255,12 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 	t := []string{""}
 
-	// truncate file path, raw file path kept in selected[1]
+	//!#: truncate file path, raw file path kept in selected[1]
 	if len(strings.Split(selected[1], "/")) <= 2 {
 		file = selected[1]
 	} else {
 		t = []string{strings.Split(selected[1], "/")[len(strings.Split(selected[1], "/"))-1], strings.Split(selected[1], "/")[len(strings.Split(selected[1], "/"))-2]}
-		file = fmt.Sprintf("%s/%s", t[0], t[1])
+		file = fmt.Sprintf("%s/%s", t[1], t[0])
 	}
 
 	var wdiff []byte
