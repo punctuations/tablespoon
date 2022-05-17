@@ -206,16 +206,26 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	if selectFlag == "" {
 		for n := range diffs {
 			if files[n] != "tbsp.json" && files[n] != "tablespoon.json" {
-				for f := range ignored {
-					if files[n] != ignored[f] {
-						s, _ := strconv.Atoi(selected[0])
-						if n == 0 {
-							selected = []string{strconv.Itoa(diffs[n]), files[n]}
-						} else if diffs[n] > s {
-							selected = []string{strconv.Itoa(diffs[n]), files[n]}
+				if len(ignored) > 0 {
+					for f := range ignored {
+						if files[n] != ignored[f] {
+							s, _ := strconv.Atoi(selected[0])
+							if n == 0 {
+								selected = []string{strconv.Itoa(diffs[n]), files[n]}
+							} else if diffs[n] > s {
+								selected = []string{strconv.Itoa(diffs[n]), files[n]}
+							}
 						}
 					}
+				} else {
+					s, _ := strconv.Atoi(selected[0])
+					if n == 0 {
+						selected = []string{strconv.Itoa(diffs[n]), files[n]}
+					} else if diffs[n] > s {
+						selected = []string{strconv.Itoa(diffs[n]), files[n]}
+					}
 				}
+
 			}
 		}
 	} else {
@@ -226,7 +236,6 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		}
 	}
 
-	fmt.Println(strings.Trim(fmt.Sprint(selected), "[]"))
 	if len(selected) < 2 {
 		rulesErr = errors.New("404: File not found")
 		return
@@ -246,6 +255,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 	t := []string{""}
 
+	// truncate file path, raw file path kept in selected[1]
 	if len(strings.Split(selected[1], "/")) <= 2 {
 		file = selected[1]
 	} else {
@@ -256,14 +266,14 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	var wdiff []byte
 
 	if unstaged {
-		wordDiffs, err := exec.Command("git", "diff", "--word-diff=porcelain", file).Output()
+		wordDiffs, err := exec.Command("git", "diff", "--word-diff=porcelain", selected[1]).Output()
 		if err != nil {
 			rulesErr = errors.New("500: An error occurred when running git diff; " + err.Error())
 			return
 		}
 		wdiff = wordDiffs
 	} else {
-		wordDiffs, err := exec.Command("git", "diff", "--staged", "--word-diff=porcelain", file).Output()
+		wordDiffs, err := exec.Command("git", "diff", "--staged", "--word-diff=porcelain", selected[1]).Output()
 		if err != nil {
 			rulesErr = errors.New("500: An error occurred when running git diff; " + err.Error())
 			return
@@ -289,7 +299,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		short = shortened
 	} else {
 		// fix this if statement to be updated with new method
-		if len(strings.Split(string(wdiff), commentID)) < 1 {
+		if len(strings.Split(string(wdiff), commentID)) < 2 {
 			userShort := promptui.Prompt{
 				Label:   fmt.Sprintf("What was changed in %s?", file),
 				Default: in,
@@ -315,7 +325,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 	}
 
 	if cleanup {
-		content, contentErr := ioutil.ReadFile(file)
+		content, contentErr := ioutil.ReadFile(selected[1])
 		if contentErr != nil {
 			rulesErr = errors.New("500: An error occurred while trying to read the file; " + contentErr.Error())
 			return
@@ -323,7 +333,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		t := strings.ReplaceAll(string(content), commentID+short, short)
 
-		f, openErr := os.OpenFile(file, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+		f, openErr := os.OpenFile(selected[1], os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 		//!#: return && close file on error
 		if openErr != nil {
 			f.Close()
@@ -331,7 +341,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 			return
 		}
 
-		if err := os.Truncate(file, 0); err != nil {
+		if err := os.Truncate(selected[1], 0); err != nil {
 			f.Close()
 			rulesErr = errors.New("500: An error occurred while trying to truncate the file; " + err.Error())
 			return

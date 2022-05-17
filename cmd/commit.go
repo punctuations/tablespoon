@@ -137,7 +137,7 @@ var commitCmd = &cobra.Command{
 		}
 
 		if unstaged {
-			_, resErr := exec.Command("git", "add", "*").Output()
+			_, resErr := exec.Command("git", "add", ".").Output()
 
 			if resErr != nil {
 				pterm.Error.Println("500: An error occurred when running git add; ", resErr.Error())
