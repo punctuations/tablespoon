@@ -79,7 +79,7 @@ curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash
 - Customize commentID via the config file!
 
 ## TODO
-- [ ] Fix error with git
+- [x] Fix error with git
 - [x] Prompt for framework to determine importance of files? (For whichever goes in the short summary)
 - [x] when message is generated have a few to select from (similar to [thefuck](https://github.com/nvbn/thefuck))
 - [x] create `tablespoon --alias` command to create an alias for tablespoon as `tbsp`
