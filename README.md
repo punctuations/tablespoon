@@ -49,6 +49,9 @@
 
 Tablespoon is a simple cli tool that can generate semantic commit messages based on comments in order to enforce best practices!
 
+## Documentation
+All documentation can be found through the tablespoon site here: [docs.tbsp.coffee](https://docs.tbsp.coffee)
+
 ## Installation
 
 Run the following command in a terminal and you're ready to go!
