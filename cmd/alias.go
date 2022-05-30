@@ -24,7 +24,7 @@ var aliasCmd = &cobra.Command{
 		if shell == "bash" || shell == "sh" {
 			fmt.Printf("function %s () { tablespoon $@; }", shorthand)
 		} else if shell == "zsh" {
-			fmt.Printf("%s () {{\n  $TBSP_CMD=$(\n    echo tablespoon $@\n  ) && eval $TBSP_CMD\n}}", shorthand)
+			fmt.Printf("%s () {\n  $TBSP_CMD=$(\n    echo tablespoon $@\n  ) && eval $TBSP_CMD\n}", shorthand)
 		} else if shell == "fish" {
 			fmt.Printf("function %s\n  tablespoon $argv\nend", shorthand)
 		} else if shell == "tsch" || shell == "csh" {
