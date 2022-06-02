@@ -265,26 +265,32 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 	var wdiff []byte
 
-	if unstaged {
-		wordDiffs, err := exec.Command("git", "diff", "--word-diff=porcelain", selected[1]).Output()
-		if err != nil {
-			rulesErr = errors.New("500: An error occurred when running git diff; " + err.Error())
-			return
+	fmt.Println(selected[1])
+
+	_, FileDoesNotExist := os.Stat(selected[1])
+
+	if FileDoesNotExist == nil {
+		if unstaged {
+			wordDiffs, err := exec.Command("git", "diff", "--word-diff=porcelain", selected[1]).Output()
+			if err != nil {
+				rulesErr = errors.New("500: An error occurred when running git diff; " + err.Error())
+				return
+			}
+			wdiff = wordDiffs
+		} else {
+			wordDiffs, err := exec.Command("git", "diff", "--staged", "--word-diff=porcelain", selected[1]).Output()
+			if err != nil {
+				rulesErr = errors.New("500: An error occurred when running git diff; " + err.Error())
+				return
+			}
+			wdiff = wordDiffs
 		}
-		wdiff = wordDiffs
-	} else {
-		wordDiffs, err := exec.Command("git", "diff", "--staged", "--word-diff=porcelain", selected[1]).Output()
-		if err != nil {
-			rulesErr = errors.New("500: An error occurred when running git diff; " + err.Error())
-			return
-		}
-		wdiff = wordDiffs
 	}
 
 	var in string
 
 	//tbsp: add new `--no-comment flag`
-	if ncomment {
+	if ncomment || FileDoesNotExist != nil {
 		userShort := promptui.Prompt{
 			Label:   fmt.Sprintf("What was changed in %s?", file),
 			Default: in,
@@ -298,7 +304,6 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 		short = shortened
 	} else {
-		// fix this if statement to be updated with new method
 		if len(strings.Split(string(wdiff), commentID)) < 2 {
 			userShort := promptui.Prompt{
 				Label:   fmt.Sprintf("What was changed in %s?", file),
@@ -324,7 +329,7 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 		}
 	}
 
-	if cleanup {
+	if cleanup && FileDoesNotExist == nil {
 		content, contentErr := ioutil.ReadFile(selected[1])
 		if contentErr != nil {
 			rulesErr = errors.New("500: An error occurred while trying to read the file; " + contentErr.Error())
