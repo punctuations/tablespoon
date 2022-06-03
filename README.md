@@ -63,12 +63,12 @@ iwr instl.sh/punctuations/tablespoon/windows | iex
 
 **macOS**
 ```bash
-curl -sSL instl.sh/punctuations/tablespoon/macos | sudo bash   
+curl -sSL instl.sh/punctuations/tablespoon/macos | bash   
 ```
 
 **Linux**
 ```bash
-curl -sSL instl.sh/punctuations/tablespoon/linux | sudo bash  
+curl -sSL instl.sh/punctuations/tablespoon/linux | bash  
 ```
 
 ----
