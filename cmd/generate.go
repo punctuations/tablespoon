@@ -265,8 +265,6 @@ func rules(input []string, unstaged bool, ncomment bool, selectFlag string) (mes
 
 	var wdiff []byte
 
-	fmt.Println(selected[1])
-
 	_, FileDoesNotExist := os.Stat(selected[1])
 
 	if FileDoesNotExist == nil {
