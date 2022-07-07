@@ -45,7 +45,6 @@ jobs:
           go build . -o out
           cp README.md ./out
           cp LICENSE ./out
-          cp .kernelrc ./out
       - name: Archive release
         if: ${{ matrix.config.os != 'windows-latest' }}
         uses: thedoctor0/zip-release@main
