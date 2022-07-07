@@ -44,10 +44,7 @@ jobs:
         run: |
           go build . -o out
       - name: Copy files to be compressed
-        run: |
-          cp README.md ./out
-          cp LICENSE ./out
-          cp .kernelrc ./out
+        run: "cp .kernelrc ./out && cp README.md ./out && cp LICENSE ./out"
       - name: Archive release
         if: ${{ matrix.config.os != 'windows-latest' }}
         uses: thedoctor0/zip-release@main
