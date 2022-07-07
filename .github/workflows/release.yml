@@ -53,7 +53,10 @@ jobs:
         with:
           type: 'tar'
           path: './out'
-          filename: "kernel-${{ 'linux' if matrix.config.os == 'ubuntu-latest' else 'mac' }}.tar.gz"
+        - if: ${{ matrix.config.os == 'ubuntu-latest' }}
+          filename: "kernel-linux.tar.gz"
+        - if: ${{ matrix.config.os == 'macos-latest' }}
+          filename: "kernel-mac.tar.gz"
       - name: Archive release (Windows)
         if: ${{ matrix.config.os == 'window-latest' }}
         uses: thedoctor0/zip-release@main
@@ -69,9 +72,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: "./kernel-${{ 'linux' if matrix.config.os == 'ubuntu-latest' else 'mac' }}.tar.gz"
-          asset_name: "kernel-${{ 'linux' if matrix.config.os == 'ubuntu-latest' else 'mac' }}.tar.gz"
-          asset_content_type: application/gzip
+        - if: ${{ matrix.config.os == 'ubuntu-latest' }}
+          asset_path: "./kernel-linux.tar.gz"
+          asset_name: "kernel-linux.tar.gz"
+        - if: ${{ matrix.config.os == 'macos-latest' }}
+          asset_path: "./kernel-mac.tar.gz"
+          asset_name: "kernel-mac.tar.gz"
+        - asset_content_type: application/gzip
       - name: Upload Release Asset Windows
         if: ${{ matrix.config.os == 'windows-latest' }}
         id: upload-release-asset-windows
