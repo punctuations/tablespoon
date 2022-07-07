@@ -24,3 +24,63 @@ jobs:
           args: release --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  popcorn-release:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      matrix:
+        config:
+          - os: ubuntu-latest
+          - os: macos-latest
+          - os: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v2
+      - name: Release kernel (popcorn)
+        run: |
+          go build . -o out
+      - name: Copy files to be compressed
+        run: |
+          cp README.md ./out
+          cp LICENSE ./out
+          cp .kernelrc ./out
+      - name: Archive release
+        if: ${{ matrix.config.os != 'windows-latest' }}
+        uses: thedoctor0/zip-release@main
+        with:
+          type: 'tar'
+          path: './out'
+          filename: "kernel-${{ 'linux' if matrix.config.os == 'ubuntu-latest' else 'mac' }}.tar.gz"
+      - name: Archive release (Windows)
+        if: ${{ matrix.config.os == 'window-latest' }}
+        uses: thedoctor0/zip-release@main
+        with:
+          type: 'zip'
+          path: './out'
+          filename: 'kernel-windows.zip'
+      - name: Upload Release Asset
+        if: ${{ matrix.config.os != 'windows-latest' }}
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: "./kernel-${{ 'linux' if matrix.config.os == 'ubuntu-latest' else 'mac' }}.tar.gz"
+          asset_name: "kernel-${{ 'linux' if matrix.config.os == 'ubuntu-latest' else 'mac' }}.tar.gz"
+          asset_content_type: application/gzip
+      - name: Upload Release Asset Windows
+        if: ${{ matrix.config.os == 'windows-latest' }}
+        id: upload-release-asset-windows
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ./kernel-windows.zip
+          asset_name: kernel-windows.zip
+          asset_content_type: application/zip
+

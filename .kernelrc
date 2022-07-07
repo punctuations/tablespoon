@@ -1,0 +1,10 @@
+{
+    "kernel_name": "tablespoon",
+    "kernel_type": "packed",
+    "dev_cmd": "popcorn dev",
+    "seed_cmd": "go build . -o @dest",
+    "advanced": {
+        "os": ["mac", "windows", "linux"],
+        "dev_node":  "-dev"
+    }
+}
