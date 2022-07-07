@@ -43,8 +43,9 @@ jobs:
       - name: Release kernel (popcorn)
         run: |
           go build . -o out
-      - name: Copy files to be compressed
-        run: "cp .kernelrc ./out && cp README.md ./out && cp LICENSE ./out"
+          cp README.md ./out
+          cp LICENSE ./out
+          cp .kernelrc ./out
       - name: Archive release
         if: ${{ matrix.config.os != 'windows-latest' }}
         uses: thedoctor0/zip-release@main
