@@ -56,7 +56,7 @@ jobs:
         uses: thedoctor0/zip-release@main
         with:
           type: "tar"
-          path: "./out"
+          path: "./out/"
           if: ${{ matrix.config.os == 'macos-latest' }}
           filename: "kernel-mac.tar.gz"
       - name: "Archive release (Ubuntu)"
@@ -64,14 +64,14 @@ jobs:
         uses: thedoctor0/zip-release@main
         with:
           type: "tar"
-          path: "./out"
+          path: "./out/"
           filename: "kernel-linux.tar.gz"
       - name: "Archive release (Windows)"
         if: ${{ matrix.config.os == 'windows-latest' }}
         uses: thedoctor0/zip-release@main
         with:
           type: 'zip'
-          path: './out'
+          path: './out/'
           filename: 'kernel-windows.zip'
       - name: Get release
         id: release
