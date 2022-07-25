@@ -41,7 +41,11 @@ jobs:
       - name: "Set up Go"
         uses: actions/setup-go@v2
       - name: "Build Go"
-        run: "go build . -o ./out"
+        if: ${{ matrix.config.os != 'windows-latest' }}
+        run: "go build -o ./out/tablespoon"
+      - name: "Build Go (Windows)"
+        if: ${{ matrix.config.os == 'windows-latest' }}
+        run: "go build -o ./out/tablespoon.exe"
       - name: "Copy files to be compressed"
         run: |
           cp .kernelrc ./out
