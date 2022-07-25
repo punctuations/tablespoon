@@ -86,8 +86,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: "./kernel-mac.tar.gz"
-          asset_name: "kernel-mac.tar.gz"
+          asset_path: "./kernel-linux.tar.gz"
+          asset_name: "kernel-linux.tar.gz"
           asset_content_type: application/gzip
       - name: "Upload Release Asset (Ubuntu)"
         if: ${{ matrix.config.os == 'ubuntu-latest' }}
@@ -97,8 +97,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: "./kernel-linux.tar.gz"
-          asset_name: "kernel-linux.tar.gz"
+          asset_path: "./kernel-mac.tar.gz"
+          asset_name: "kernel-mac.tar.gz"
           asset_content_type: application/gzip
       - name: "Upload Release Asset (Windows)"
         if: ${{ matrix.config.os == 'windows-latest' }}
