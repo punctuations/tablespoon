@@ -79,7 +79,7 @@ jobs:
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Upload Release Asset"
-        if: ${{ matrix.config.os != 'windows-latest' }}
+        if: ${{ matrix.config.os == 'ubuntu-latest' }}
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
@@ -89,8 +89,8 @@ jobs:
           asset_path: "./kernel-linux.tar.gz"
           asset_name: "kernel-linux.tar.gz"
           asset_content_type: application/gzip
-      - name: "Upload Release Asset (Ubuntu)"
-        if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      - name: "Upload Release Asset (Mac)"
+        if: ${{ matrix.config.os == 'macos-latest' }}
         id: upload-release-asset-ubuntu
         uses: actions/upload-release-asset@v1
         env:
