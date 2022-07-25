@@ -67,7 +67,7 @@ jobs:
           path: "./out"
           filename: "kernel-linux.tar.gz"
       - name: "Archive release (Windows)"
-        if: ${{ matrix.config.os == 'window-latest' }}
+        if: ${{ matrix.config.os == 'windows-latest' }}
         uses: thedoctor0/zip-release@main
         with:
           type: 'zip'
