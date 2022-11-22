@@ -6,7 +6,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/pterm/pcli v0.4.6
 	github.com/pterm/pterm v0.12.50
-	github.com/spf13/cobra v1.5.0
+	github.com/spf13/cobra v1.6.1
 )
 
 require (
@@ -15,7 +15,7 @@ require (
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/gookit/color v1.5.2 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/lithammer/fuzzysearch v1.1.5 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
